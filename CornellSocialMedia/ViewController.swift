@@ -7,12 +7,28 @@
 //
 
 import UIKit
+import SnapKit
 
 class ViewController: UIViewController {
+    
+    var hello : UILabel!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        hello = UILabel()
+        hello.text = "Hello World"
+        view.addSubview(hello)
+        
+        view.backgroundColor = .white
+        
+        setUpConstraints()
+    }
+    
+    func setUpConstraints() {
+        hello.snp.makeConstraints { (make) -> Void in
+            make.center.equalTo(self.view)
+        }
     }
 
 
