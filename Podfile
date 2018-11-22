@@ -10,5 +10,6 @@ target 'CornellSocialMedia' do
   pod 'Hero'
   pod 'SnapKit'
   pod 'SwiftyJSON'
+  pod 'TextFieldEffects'
 
 end

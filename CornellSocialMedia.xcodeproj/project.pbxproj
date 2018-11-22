@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4F0D269721A738AA00AA8AB4 /* Gradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F0D269621A738AA00AA8AB4 /* Gradient.swift */; };
 		4FA0576A21A3B0BB000F0544 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA0576921A3B0BB000F0544 /* AppDelegate.swift */; };
 		4FA0576C21A3B0BB000F0544 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA0576B21A3B0BB000F0544 /* ViewController.swift */; };
 		4FA0577121A3B0BD000F0544 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FA0577021A3B0BD000F0544 /* Assets.xcassets */; };
@@ -15,6 +16,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4F0D269621A738AA00AA8AB4 /* Gradient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gradient.swift; sourceTree = "<group>"; };
 		4FA0576621A3B0BB000F0544 /* CornellSocialMedia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CornellSocialMedia.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FA0576921A3B0BB000F0544 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4FA0576B21A3B0BB000F0544 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -64,6 +66,7 @@
 				4FA0577021A3B0BD000F0544 /* Assets.xcassets */,
 				4FA0577221A3B0BD000F0544 /* LaunchScreen.storyboard */,
 				4FA0577521A3B0BD000F0544 /* Info.plist */,
+				4F0D269621A738AA00AA8AB4 /* Gradient.swift */,
 			);
 			path = CornellSocialMedia;
 			sourceTree = "<group>";
@@ -188,6 +191,7 @@
 				"${BUILT_PRODUCTS_DIR}/Hero/Hero.framework",
 				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
+				"${BUILT_PRODUCTS_DIR}/TextFieldEffects/TextFieldEffects.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
@@ -197,6 +201,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Hero.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TextFieldEffects.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -212,6 +217,7 @@
 			files = (
 				4FA0576C21A3B0BB000F0544 /* ViewController.swift in Sources */,
 				4FA0576A21A3B0BB000F0544 /* AppDelegate.swift in Sources */,
+				4F0D269721A738AA00AA8AB4 /* Gradient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
