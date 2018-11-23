@@ -10,14 +10,18 @@ import UIKit
 import SnapKit
 import TextFieldEffects
 
-class ViewController: UIViewController {
+class LoginViewController: UIViewController {
     
+    // MARK: - Parameters
     // UI Elements
     var backgroundImage : UIImageView!
     var loginTitle : UILabel!
     var username : IsaoTextField!
     var password : IsaoTextField!
     var login : UIButton!
+    
+    // Log In Error Message
+    var alert : UIAlertController!
     
     // Padding
     let titlePadding = 130
@@ -34,6 +38,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // MARK: - UI Elements
         backgroundImage = UIImageView(image: getABackgroundImage())
         backgroundImage.contentMode = .scaleToFill
         backgroundImage.alpha = 0.35
@@ -70,16 +75,23 @@ class ViewController: UIViewController {
         login.setTitleColor(.white, for: .normal)
         login.bounds = CGRect(x: 0, y: 0, width: buttonWidth, height: buttonHeight)
         login.clipsToBounds = true
-        login.applyGradient(with: [.red, .white], gradient: .topLeftBottomRight)
+        login.applyGradient(with: [.red, UIColor(hue: 0.1, saturation: 1, brightness: 1, alpha: 1)], gradient: .topLeftBottomRight)
         login.layer.cornerRadius = 10
         login.alpha = 0.3
         login.addTarget(self, action: #selector(loginPressed), for: .touchDown)
         view.addSubview(login)
         
+        // MARK: Background
         view.backgroundColor = .darkGray
         navigationController?.isNavigationBarHidden = true
         
-        // animate
+        // MARK: Error Prompt
+        alert = UIAlertController(title: "Error", message: "Could not log in with provided information", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (alertAction) in
+            self.alert.dismiss(animated: true, completion: nil)
+        }))
+        
+        // MARK: Animations
         UIView.animate(withDuration: 1) {
             self.loginTitle.alpha = 1
             self.username.alpha = 1
@@ -91,13 +103,17 @@ class ViewController: UIViewController {
         setUpConstraints()
     }
     
+    // MARK: - Button and Error Prompt
     @objc func loginPressed() {
         // TODO: implement proper login
         // validate username + passqord
         // if all good go to main screen:
+        present(alert, animated: true, completion: nil)
         print("login button pressed")
     }
     
+    
+    // MARK: - Functions for UI and Positioning
     /**
      Gets a random image from the assets name "cornell#" where # is an integer
      */
