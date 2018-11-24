@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Hero
 import SnapKit
 import TextFieldEffects
 
@@ -56,6 +57,7 @@ class LoginViewController: UIViewController {
         username.textColor = .white
         username.activeColor = .red
         username.inactiveColor = .white
+        username.autocorrectionType = .no
         username.font = UIFont.systemFont(ofSize: 20)
         username.alpha = 0.1
         view.addSubview(username)
@@ -65,6 +67,7 @@ class LoginViewController: UIViewController {
         password.textColor = .white
         password.activeColor = .red
         password.inactiveColor = .white
+        password.autocorrectionType = .no
         password.font = UIFont.systemFont(ofSize: 20)
         password.isSecureTextEntry = true
         password.alpha = 0.2
@@ -99,6 +102,8 @@ class LoginViewController: UIViewController {
             self.login.alpha = 1
         }
         
+        login.hero.id = "backdrop"
+        
         setNeedsStatusBarAppearanceUpdate()
         setUpConstraints()
     }
@@ -108,8 +113,10 @@ class LoginViewController: UIViewController {
         // TODO: implement proper login
         // validate username + passqord
         // if all good go to main screen:
-        present(alert, animated: true, completion: nil)
-        print("login button pressed")
+        
+        //present(alert, animated: true, completion: nil)
+        login.setTitleColor(.clear, for: .normal)
+        self.navigationController?.present(MainFeedViewController(), animated: true, completion: nil)
     }
     
     
