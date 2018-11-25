@@ -12,6 +12,8 @@
 		4FA0576C21A3B0BB000F0544 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA0576B21A3B0BB000F0544 /* LoginViewController.swift */; };
 		4FA0577121A3B0BD000F0544 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FA0577021A3B0BD000F0544 /* Assets.xcassets */; };
 		4FA0577421A3B0BD000F0544 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4FA0577221A3B0BD000F0544 /* LaunchScreen.storyboard */; };
+		873AA7AF21AACF640023A2C7 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 873AA7AE21AACF640023A2C7 /* ProfileViewController.swift */; };
+		879FB34E21AB19EC000FC6D0 /* PeopleCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 879FB34D21AB19EC000FC6D0 /* PeopleCollectionViewCell.swift */; };
 		93D6C24190860A24FC1897AA /* Pods_CornellSocialMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 842AAB4DFEA9BA89D9ED410E /* Pods_CornellSocialMedia.framework */; };
 /* End PBXBuildFile section */
 
@@ -25,6 +27,8 @@
 		4FA0577521A3B0BD000F0544 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		61058FD23363D21014ACABC7 /* Pods-CornellSocialMedia.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CornellSocialMedia.release.xcconfig"; path = "Pods/Target Support Files/Pods-CornellSocialMedia/Pods-CornellSocialMedia.release.xcconfig"; sourceTree = "<group>"; };
 		842AAB4DFEA9BA89D9ED410E /* Pods_CornellSocialMedia.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CornellSocialMedia.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		873AA7AE21AACF640023A2C7 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		879FB34D21AB19EC000FC6D0 /* PeopleCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeopleCollectionViewCell.swift; sourceTree = "<group>"; };
 		D4BFF1282C8DE51CA1FC1667 /* Pods-CornellSocialMedia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CornellSocialMedia.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CornellSocialMedia/Pods-CornellSocialMedia.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -63,6 +67,8 @@
 			children = (
 				4FA0576921A3B0BB000F0544 /* AppDelegate.swift */,
 				4FA0576B21A3B0BB000F0544 /* LoginViewController.swift */,
+				873AA7AE21AACF640023A2C7 /* ProfileViewController.swift */,
+				879FB34D21AB19EC000FC6D0 /* PeopleCollectionViewCell.swift */,
 				4FA0577021A3B0BD000F0544 /* Assets.xcassets */,
 				4FA0577221A3B0BD000F0544 /* LaunchScreen.storyboard */,
 				4FA0577521A3B0BD000F0544 /* Info.plist */,
@@ -217,6 +223,8 @@
 			files = (
 				4FA0576C21A3B0BB000F0544 /* LoginViewController.swift in Sources */,
 				4FA0576A21A3B0BB000F0544 /* AppDelegate.swift in Sources */,
+				879FB34E21AB19EC000FC6D0 /* PeopleCollectionViewCell.swift in Sources */,
+				873AA7AF21AACF640023A2C7 /* ProfileViewController.swift in Sources */,
 				4F0D269721A738AA00AA8AB4 /* Gradient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
