@@ -88,10 +88,10 @@ class LoginViewController: UIViewController {
         navigationController?.setNavigationBarHidden(true, animated: true)
         
         // MARK: Error Prompt
-        alert = UIAlertController(title: "Error", message: "Could not log in with provided information", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (alertAction) in
-            self.alert.dismiss(animated: true, completion: nil)
-        }))
+//        alert = UIAlertController(title: "Error", message: "Could not log in with provided information", preferredStyle: .alert)
+//        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (alertAction) in
+//            self.alert.dismiss(animated: true, completion: nil)
+//        }))
         
         // MARK: Animations
         UIView.animate(withDuration: 1) {
