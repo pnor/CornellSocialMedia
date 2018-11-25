@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		4F0A00C621A8703700BF6EA9 /* MainFeedCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F0A00C521A8703700BF6EA9 /* MainFeedCollectionViewCell.swift */; };
-		4F0A00C821A8704600BF6EA9 /* PictureCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F0A00C721A8704600BF6EA9 /* PictureCollectionViewCell.swift */; };
 		4F0D269721A738AA00AA8AB4 /* Gradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F0D269621A738AA00AA8AB4 /* Gradient.swift */; };
 		4F1404A121A7901B00490722 /* MainFeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1404A021A7901B00490722 /* MainFeedViewController.swift */; };
 		4FA0576A21A3B0BB000F0544 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA0576921A3B0BB000F0544 /* AppDelegate.swift */; };
@@ -21,7 +20,6 @@
 
 /* Begin PBXFileReference section */
 		4F0A00C521A8703700BF6EA9 /* MainFeedCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainFeedCollectionViewCell.swift; sourceTree = "<group>"; };
-		4F0A00C721A8704600BF6EA9 /* PictureCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PictureCollectionViewCell.swift; sourceTree = "<group>"; };
 		4F0D269621A738AA00AA8AB4 /* Gradient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gradient.swift; sourceTree = "<group>"; };
 		4F1404A021A7901B00490722 /* MainFeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainFeedViewController.swift; sourceTree = "<group>"; };
 		4FA0576621A3B0BB000F0544 /* CornellSocialMedia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CornellSocialMedia.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -52,7 +50,6 @@
 			isa = PBXGroup;
 			children = (
 				4F0A00C521A8703700BF6EA9 /* MainFeedCollectionViewCell.swift */,
-				4F0A00C721A8704600BF6EA9 /* PictureCollectionViewCell.swift */,
 			);
 			path = CollectionViewCells;
 			sourceTree = "<group>";
@@ -238,7 +235,6 @@
 				4F0A00C621A8703700BF6EA9 /* MainFeedCollectionViewCell.swift in Sources */,
 				4FA0576C21A3B0BB000F0544 /* LoginViewController.swift in Sources */,
 				4FA0576A21A3B0BB000F0544 /* AppDelegate.swift in Sources */,
-				4F0A00C821A8704600BF6EA9 /* PictureCollectionViewCell.swift in Sources */,
 				4F0D269721A738AA00AA8AB4 /* Gradient.swift in Sources */,
 				4FF0560321A911350084E5FE /* Post.swift in Sources */,
 				4F1404A121A7901B00490722 /* MainFeedViewController.swift in Sources */,

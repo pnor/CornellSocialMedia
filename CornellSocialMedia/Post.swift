@@ -24,6 +24,7 @@ class Post : CustomStringConvertible {
     }
     
     var description: String {
-        return "Post<Name: \(name)|profileImage: \(profileImage)|text: \(text)|image: \(image)>"
+        return "Post<name? \(name)||text: \(text != nil)|image: \(image != nil)>\n"
+        //return "Post<Name: \(name)|profileImage: \(profileImage)|text: \(text)|image: \(image)>"
     }
 }

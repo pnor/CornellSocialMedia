@@ -29,38 +29,40 @@ class MainFeedViewController: UIViewController, UICollectionViewDelegate, UIColl
     
     // Padding
     let padding : CGFloat = 20
-    let messageHeight : CGFloat = 300
-    let imageMessageHeight : CGFloat = 400
+    let messageHeight : CGFloat = 200
+    let imageMessageHeight : CGFloat = 300
+    let blankMessageHeight : CGFloat = 130
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // MARK: UI Elements
-        navigationController?.isNavigationBarHidden = true
+        navigationController?.setNavigationBarHidden(false, animated: true)
+        navigationController?.navigationBar.isTranslucent = true
         title = "Main Feed"
         
         search = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(goToSearch))
         navigationItem.leftBarButtonItem = search
         
-        profile = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(goToProfile))
+        profile = UIBarButtonItem(barButtonSystemItem: .bookmarks, target: self, action: #selector(goToProfile))
         navigationItem.rightBarButtonItem = profile
         
-        var messageLayout = UICollectionViewFlowLayout()
-        messageLayout.scrollDirection = .horizontal
-        messageLayout.minimumInteritemSpacing = padding
+        let messageLayout = UICollectionViewFlowLayout()
+        messageLayout.scrollDirection = .vertical
+        messageLayout.minimumInteritemSpacing = 1000000
         
         messagesCollection = UICollectionView(frame: .zero, collectionViewLayout: messageLayout)
         messagesCollection.delegate = self
         messagesCollection.dataSource = self
         messagesCollection.alwaysBounceVertical = true
         messagesCollection.backgroundColor = .clear
-        messagesCollection.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+        messagesCollection.register(MainFeedCollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+        view.addSubview(messagesCollection)
         
         // Refresh Control
         refreshControl = UIRefreshControl()
         refreshControl.tintColor = .white
         messagesCollection.addSubview(refreshControl)
         refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
-        messagesCollection.addSubview(refreshControl)
 
         // MARK: Animations
         hero.isEnabled = true
@@ -95,27 +97,28 @@ class MainFeedViewController: UIViewController, UICollectionViewDelegate, UIColl
         print("Refresh")
         // Debugging: Initialize Posts with random data
         posts = []
-        if var allPosts = posts {
-            for _ in 1...maxPosts {
-                allPosts.append(Debugging.randomPost())
-            }
+        for _ in 1...maxPosts {
+            posts?.append(Debugging.randomPost())
         }
+        
+        print(posts!)
     }
     
     // MARK: - Collection View Methods
     // MARK: UICollectionViewDataSource
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 1
+        return posts?.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         var cell : UICollectionViewCell
-        if let postImage  = posts?[indexPath.row].image { // Image Post
-            cell = messagesCollection.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath)
-            cell = cell as? MainFeedCollectionViewCell ?? cell
-            
-        } else { // Text Post
-            
+        let post = posts?[indexPath.row]
+        
+        cell = messagesCollection.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath)
+        if let feedCell = cell as? MainFeedCollectionViewCell {
+            if let curPost = post {
+                feedCell.configure(with: curPost)
+            }
         }
             
         return cell
@@ -127,7 +130,12 @@ class MainFeedViewController: UIViewController, UICollectionViewDelegate, UIColl
     }
     // MARK: UICollectionViewDelegateFlowLayout
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-            return CGSize(width: UIScreen.main.bounds.width - CGFloat(padding * 2), height: posts?[indexPath.row].image == nil ? messageHeight : imageMessageHeight)
+        
+        if posts?[indexPath.row].text == nil && posts?[indexPath.row].image == nil { // A Blank Post
+            return CGSize(width: UIScreen.main.bounds.width - CGFloat(padding * 2), height: blankMessageHeight)
+        }
+        
+        return CGSize(width: UIScreen.main.bounds.width - CGFloat(padding * 2), height: posts?[indexPath.row].image == nil ? messageHeight : imageMessageHeight)
     }
 }
 
