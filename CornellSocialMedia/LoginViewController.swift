@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Hero
 import SnapKit
 import TextFieldEffects
 
@@ -30,11 +31,6 @@ class LoginViewController: UIViewController {
     let buttonWidth = 140
     let buttonHeight = 30
     
-    /// Hide the status bar
-    override var prefersStatusBarHidden: Bool {
-        return true
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -56,6 +52,9 @@ class LoginViewController: UIViewController {
         username.textColor = .white
         username.activeColor = .red
         username.inactiveColor = .white
+        username.tintColor = .clear
+        username.autocorrectionType = .no
+        username.autocapitalizationType = .none
         username.font = UIFont.systemFont(ofSize: 20)
         username.alpha = 0.1
         view.addSubview(username)
@@ -65,6 +64,9 @@ class LoginViewController: UIViewController {
         password.textColor = .white
         password.activeColor = .red
         password.inactiveColor = .white
+        password.tintColor = .clear
+        password.autocorrectionType = .no
+        password.autocapitalizationType = .none
         password.font = UIFont.systemFont(ofSize: 20)
         password.isSecureTextEntry = true
         password.alpha = 0.2
@@ -83,7 +85,7 @@ class LoginViewController: UIViewController {
         
         // MARK: Background
         view.backgroundColor = .darkGray
-        navigationController?.isNavigationBarHidden = true
+        navigationController?.setNavigationBarHidden(true, animated: true)
         
         // MARK: Error Prompt
         alert = UIAlertController(title: "Error", message: "Could not log in with provided information", preferredStyle: .alert)
@@ -99,6 +101,9 @@ class LoginViewController: UIViewController {
             self.login.alpha = 1
         }
         
+        login.hero.id = "backdrop"
+        navigationController?.hero.isEnabled = true
+        
         setNeedsStatusBarAppearanceUpdate()
         setUpConstraints()
     }
@@ -108,8 +113,11 @@ class LoginViewController: UIViewController {
         // TODO: implement proper login
         // validate username + passqord
         // if all good go to main screen:
-        present(alert, animated: true, completion: nil)
-        print("login button pressed")
+        
+        //present(alert, animated: true, completion: nil)
+        login.setTitleColor(.clear, for: .normal)
+        //self.navigationController?.present(MainFeedViewController(), animated: true, completion: nil)
+        self.navigationController?.pushViewController(MainFeedViewController(), animated: true)
     }
     
     
