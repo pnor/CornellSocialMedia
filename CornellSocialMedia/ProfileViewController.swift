@@ -21,7 +21,7 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
     var profileNavigatorView: UICollectionView!
     
     //Collection View Elements
-    let peopleReuseIdentifier = "peopleReuseIdentifier"
+    let peopleViewReuseIdentifier = "peopleViewReuseIdentifier"
     
     
     override func viewDidLoad() {
@@ -80,7 +80,7 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
         profileNavigatorView.delegate = self
         profileNavigatorView.dataSource = self
         profileNavigatorView.alwaysBounceVertical = true
-        profileNavigatorView.register(PeopleCollectionViewCell.self, forCellWithReuseIdentifier: peopleReuseIdentifier)
+        profileNavigatorView.register(PeopleCollectionViewCell.self, forCellWithReuseIdentifier: peopleViewReuseIdentifier)
         view.addSubview(profileNavigatorView)
         
         // MARK: Background
