@@ -26,18 +26,23 @@ class MainFeedViewController: UIViewController, UICollectionViewDelegate, UIColl
     // Data displayed
     var posts : [Post]?  // Full of dummy Posts rn until Networking Happens
     let maxPosts = 30 // Loaded in memory
+    let maxLinesOfTextPost = 10
+    let maxLinesOfCaption = 1
     
-    // Padding
+    // Padding and Sizing
     let padding : CGFloat = 20
-    let messageHeight : CGFloat = 200
-    let imageMessageHeight : CGFloat = 300
+    let messageBaseheight : CGFloat = 80
+    let imageMessageHeight : CGFloat = 130
     let blankMessageHeight : CGFloat = 130
+    let charactersPerLine = 40 // an estimate
+    let lineSize = 24 // also an estimate
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // MARK: UI Elements
         navigationController?.setNavigationBarHidden(false, animated: true)
         navigationController?.navigationBar.isTranslucent = true
+        navigationController?.navigationBar.tintColor = .red
         title = "Main Feed"
         
         search = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(goToSearch))
@@ -48,6 +53,7 @@ class MainFeedViewController: UIViewController, UICollectionViewDelegate, UIColl
         
         let messageLayout = UICollectionViewFlowLayout()
         messageLayout.scrollDirection = .vertical
+        messageLayout.minimumLineSpacing = padding
         messageLayout.minimumInteritemSpacing = 1000000
         
         messagesCollection = UICollectionView(frame: .zero, collectionViewLayout: messageLayout)
@@ -80,13 +86,13 @@ class MainFeedViewController: UIViewController, UICollectionViewDelegate, UIColl
     // MARK: - UI Positioning
     func setupConstraints() {
         messagesCollection.snp.makeConstraints { (make) in
-            make.edges.equalTo(view)
+            make.edges.edges.equalToSuperview().inset(UIEdgeInsets(top: 60, left: 0, bottom: 0, right: 0))
         }
     }
     
     // MARK: - Navigation Bar Button Methods and Refresh
     @objc func goToProfile() {
-        print("Gonna go to the profile")
+        self.navigationController?.pushViewController(ProfileViewController(), animated: true)
     }
     
     @objc func goToSearch() {
@@ -98,7 +104,7 @@ class MainFeedViewController: UIViewController, UICollectionViewDelegate, UIColl
         // Debugging: Initialize Posts with random data
         posts = []
         for _ in 1...maxPosts {
-            posts?.append(Debugging.randomPost())
+            posts?.append(Debugging.getPostType([.short, .medium, .long]))
         }
         
         print(posts!)
@@ -116,6 +122,8 @@ class MainFeedViewController: UIViewController, UICollectionViewDelegate, UIColl
         
         cell = messagesCollection.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath)
         if let feedCell = cell as? MainFeedCollectionViewCell {
+            feedCell.maxLinesOfTextPost = maxLinesOfTextPost
+            feedCell.maxLinesOfCaption = maxLinesOfCaption
             if let curPost = post {
                 feedCell.configure(with: curPost)
             }
@@ -125,17 +133,21 @@ class MainFeedViewController: UIViewController, UICollectionViewDelegate, UIColl
     }
     // MARK: UICollectionViewDelegate
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("selected \(posts?[indexPath.row]) Should go to another screen")
+        print("selected \(String(describing: posts?[indexPath.row])) Should go to another screen")
         return
     }
     // MARK: UICollectionViewDelegateFlowLayout
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
-        if posts?[indexPath.row].text == nil && posts?[indexPath.row].image == nil { // A Blank Post
-            return CGSize(width: UIScreen.main.bounds.width - CGFloat(padding * 2), height: blankMessageHeight)
+        if let post = posts?[indexPath.row] {
+            if post.text == nil && post.image == nil { // A Blank Post
+                return CGSize(width: UIScreen.main.bounds.width - CGFloat(padding * 2), height: blankMessageHeight)
+            }
+            
+            return CGSize(width: UIScreen.main.bounds.width - CGFloat(padding * 2), height: posts?[indexPath.row].image == nil ?
+                messageBaseheight + CGFloat(((1...maxLinesOfTextPost).clamp((post.text?.count ?? 0) / charactersPerLine) + 1) * lineSize): // text post height
+                imageMessageHeight) // image post height
         }
-        
-        return CGSize(width: UIScreen.main.bounds.width - CGFloat(padding * 2), height: posts?[indexPath.row].image == nil ? messageHeight : imageMessageHeight)
+        return CGSize(width: UIScreen.main.bounds.width - CGFloat(padding * 2), height: blankMessageHeight)
     }
 }
 
@@ -148,20 +160,32 @@ class Debugging {
     // Settings
     static let onlyShowNormalPosts = false
     
+    // getting random posts
+    /// returns a random post
     static func randomPost() -> Post {
-        switch (randomPostType) {
-            case .short:
-                return Post(name: randomWord, profileImage: getRandomImage(), body: randomSentence(word: (3...12).randomElement()!))
-            case.medium:
+        return getPostType(randomPostType)
+    }
+    
+    /// randomly selects one of the provided types
+    static func getPostType(_ types: [PostType]) -> Post {
+        return getPostType(types.randomElement()!)
+    }
+    
+    /// gets a post of the provided type
+    static func getPostType(_ type: PostType) -> Post {
+        switch (type) {
+        case .short:
+            return Post(name: randomWord, profileImage: getRandomImage(), body: randomSentence(word: (3...12).randomElement()!))
+        case.medium:
             return Post(name: randomWord, profileImage: getRandomImage(), body: randomSentence(word: (20...60).randomElement()!))
-            case .long:
+        case .long:
             return Post(name: randomWord, profileImage: getRandomImage(), body: randomSentence(word: (80...120).randomElement()!))
-            case .image:
-                return Post(name: randomWord, profileImage: getRandomImage(), image: getRandomImage())
-            case .imageCaptionless:
-                return Post(name: randomWord, profileImage: getRandomImage(), image: getRandomImage())
-            case .noBody:
-                return Post(name: randomWord, profileImage: getRandomImage())
+        case .image:
+            return Post(name: randomWord, profileImage: getRandomImage(), image: getRandomImage())
+        case .imageCaptionless:
+            return Post(name: randomWord, profileImage: getRandomImage(), image: getRandomImage())
+        case .noBody:
+            return Post(name: randomWord, profileImage: getRandomImage())
         }
     }
     
@@ -221,5 +245,13 @@ class Debugging {
         case imageCaptionless = 5 // An Image Post without a caption
         // Wierd stuff
         case noBody = 6 // A Text post with no text (or image)
+    }
+}
+
+extension ClosedRange {
+    func clamp(_ value : Bound) -> Bound {
+        return self.lowerBound > value ? self.lowerBound
+            : self.upperBound < value ? self.upperBound
+            : value
     }
 }
