@@ -71,43 +71,19 @@
 		4FA0576821A3B0BB000F0544 /* CornellSocialMedia */ = {
 			isa = PBXGroup;
 			children = (
-				875357AB21AD13B50077FBB8 /* Misc */,
-				875357AC21AD13C80077FBB8 /* Controllers */,
-				875357AD21AD13D10077FBB8 /* CollectionViewCells */,
 				4FA0576921A3B0BB000F0544 /* AppDelegate.swift */,
-				4FA0577021A3B0BD000F0544 /* Assets.xcassets */,
-				4FA0577221A3B0BD000F0544 /* LaunchScreen.storyboard */,
-				4FA0577521A3B0BD000F0544 /* Info.plist */,
-			);
-			path = CornellSocialMedia;
-			sourceTree = "<group>";
-		};
-		875357AB21AD13B50077FBB8 /* Misc */ = {
-			isa = PBXGroup;
-			children = (
-				4F0D269621A738AA00AA8AB4 /* Gradient.swift */,
-				875357A721AB47E10077FBB8 /* People.swift */,
-			);
-			path = Misc;
-			sourceTree = "<group>";
-		};
-		875357AC21AD13C80077FBB8 /* Controllers */ = {
-			isa = PBXGroup;
-			children = (
 				4FA0576B21A3B0BB000F0544 /* LoginViewController.swift */,
 				873AA7AE21AACF640023A2C7 /* ProfileViewController.swift */,
-			);
-			path = Controllers;
-			sourceTree = "<group>";
-		};
-		875357AD21AD13D10077FBB8 /* CollectionViewCells */ = {
-			isa = PBXGroup;
-			children = (
 				879FB34D21AB19EC000FC6D0 /* PeopleCollectionViewCell.swift */,
 				875357A521AB3E880077FBB8 /* SearchViewController.swift */,
 				875357A921AD0D450077FBB8 /* PeopleFilterViewController.swift */,
+				875357A721AB47E10077FBB8 /* People.swift */,
+				4FA0577021A3B0BD000F0544 /* Assets.xcassets */,
+				4FA0577221A3B0BD000F0544 /* LaunchScreen.storyboard */,
+				4FA0577521A3B0BD000F0544 /* Info.plist */,
+				4F0D269621A738AA00AA8AB4 /* Gradient.swift */,
 			);
-			path = CollectionViewCells;
+			path = CornellSocialMedia;
 			sourceTree = "<group>";
 		};
 		CECFED29E76025DB71987928 /* Frameworks */ = {
