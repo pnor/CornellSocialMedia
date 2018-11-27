@@ -26,18 +26,23 @@ class MainFeedViewController: UIViewController, UICollectionViewDelegate, UIColl
     // Data displayed
     var posts : [Post]?  // Full of dummy Posts rn until Networking Happens
     let maxPosts = 30 // Loaded in memory
+    let maxLinesOfTextPost = 10
+    let maxLinesOfCaption = 1
     
-    // Padding
+    // Padding and Sizing
     let padding : CGFloat = 20
-    let messageHeight : CGFloat = 200
-    let imageMessageHeight : CGFloat = 300
+    let messageBaseheight : CGFloat = 80 // accounts for nametag and profile icon
+    let imageMessageBaseHeight : CGFloat = 240 // accounts for nametag, icon, and picture
     let blankMessageHeight : CGFloat = 130
+    let charactersPerLine = 35 // an estimate
+    let lineSize = 24 // also an estimate
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // MARK: UI Elements
         navigationController?.setNavigationBarHidden(false, animated: true)
         navigationController?.navigationBar.isTranslucent = true
+        navigationController?.navigationBar.tintColor = .red
         title = "Main Feed"
         
         search = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(goToSearch))
@@ -48,6 +53,7 @@ class MainFeedViewController: UIViewController, UICollectionViewDelegate, UIColl
         
         let messageLayout = UICollectionViewFlowLayout()
         messageLayout.scrollDirection = .vertical
+        messageLayout.minimumLineSpacing = padding
         messageLayout.minimumInteritemSpacing = 1000000
         
         messagesCollection = UICollectionView(frame: .zero, collectionViewLayout: messageLayout)
@@ -80,13 +86,13 @@ class MainFeedViewController: UIViewController, UICollectionViewDelegate, UIColl
     // MARK: - UI Positioning
     func setupConstraints() {
         messagesCollection.snp.makeConstraints { (make) in
-            make.edges.equalTo(view)
+            make.edges.edges.equalToSuperview().inset(UIEdgeInsets(top: 60, left: 0, bottom: 0, right: 0))
         }
     }
     
     // MARK: - Navigation Bar Button Methods and Refresh
     @objc func goToProfile() {
-        print("Gonna go to the profile")
+        self.navigationController?.pushViewController(ProfileViewController(), animated: true)
     }
     
     @objc func goToSearch() {
@@ -95,13 +101,20 @@ class MainFeedViewController: UIViewController, UICollectionViewDelegate, UIColl
     
     @objc func refresh() {
         print("Refresh")
-        // Debugging: Initialize Posts with random data
-        posts = []
-        for _ in 1...maxPosts {
-            posts?.append(Debugging.randomPost())
-        }
+        // Get some posts:
+        // Debug Vars
+        let useRandomGenerated = false
+        let generatedTypes : [Debugging.PostType] = [.short, .medium, .long, .image, .imageCaptionless]
         
-        print(posts!)
+        posts = []
+        if useRandomGenerated { // random
+            for _ in 1...maxPosts {
+                posts?.append(Debugging.getPostType(generatedTypes))
+            }
+        } else { // pre made set
+            posts? = Debugging.getDefaultPosts()
+        }
+        print(posts ?? "Nothing...😨")
     }
     
     // MARK: - Collection View Methods
@@ -116,6 +129,9 @@ class MainFeedViewController: UIViewController, UICollectionViewDelegate, UIColl
         
         cell = messagesCollection.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath)
         if let feedCell = cell as? MainFeedCollectionViewCell {
+            feedCell.clean()
+            feedCell.maxLinesOfTextPost = maxLinesOfTextPost
+            feedCell.maxLinesOfCaption = maxLinesOfCaption
             if let curPost = post {
                 feedCell.configure(with: curPost)
             }
@@ -125,101 +141,41 @@ class MainFeedViewController: UIViewController, UICollectionViewDelegate, UIColl
     }
     // MARK: UICollectionViewDelegate
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("selected \(posts?[indexPath.row]) Should go to another screen")
+        print("selected \(String(describing: posts?[indexPath.row])) Should go to another screen")
         return
     }
     // MARK: UICollectionViewDelegateFlowLayout
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
-        if posts?[indexPath.row].text == nil && posts?[indexPath.row].image == nil { // A Blank Post
-            return CGSize(width: UIScreen.main.bounds.width - CGFloat(padding * 2), height: blankMessageHeight)
+        if let post = posts?[indexPath.row] {
+            if post.text == nil && post.image == nil { // A Blank Post
+                return CGSize(width: UIScreen.main.bounds.width - CGFloat(padding * 2), height: blankMessageHeight)
+            }
+            
+            let textHeight : CGFloat
+            if post.image == nil { // text post
+                textHeight = CGFloat(((1...maxLinesOfTextPost).clamp((post.text?.count ?? 0) / charactersPerLine) + 1) * lineSize)
+            } else { // image post
+                textHeight = CGFloat(( (1...maxLinesOfCaption).clamp((post.text?.count ?? 0) / charactersPerLine) + 1) * lineSize)
+            }
+            
+            print("At indexPath: \(indexPath.row)")
+            print(post.image == nil ? "Text" : post.text == nil ? "Image" : "Image Cap")
+            let size = CGSize(width: UIScreen.main.bounds.width - CGFloat(padding * 2),
+                              height: post.image == nil ?
+                                messageBaseheight + textHeight : // text post height
+                                imageMessageBaseHeight + textHeight) // image post height
+            print("Size: \(size)")
+            return size
+            
         }
-        
-        return CGSize(width: UIScreen.main.bounds.width - CGFloat(padding * 2), height: posts?[indexPath.row].image == nil ? messageHeight : imageMessageHeight)
+        fatalError("the post index was outta bounds!")
     }
 }
 
-
-
-
-// MARK: - Debug: Make Random Posts
-// For various Debugging Purposes and providing Default Values
-class Debugging {
-    // Settings
-    static let onlyShowNormalPosts = false
-    
-    static func randomPost() -> Post {
-        switch (randomPostType) {
-            case .short:
-                return Post(name: randomWord, profileImage: getRandomImage(), body: randomSentence(word: (3...12).randomElement()!))
-            case.medium:
-            return Post(name: randomWord, profileImage: getRandomImage(), body: randomSentence(word: (20...60).randomElement()!))
-            case .long:
-            return Post(name: randomWord, profileImage: getRandomImage(), body: randomSentence(word: (80...120).randomElement()!))
-            case .image:
-                return Post(name: randomWord, profileImage: getRandomImage(), image: getRandomImage())
-            case .imageCaptionless:
-                return Post(name: randomWord, profileImage: getRandomImage(), image: getRandomImage())
-            case .noBody:
-                return Post(name: randomWord, profileImage: getRandomImage())
-        }
-    }
-    
-    //MARK: Random Text Generation
-    private static var randomWord : String {
-        get {
-            let availableWords = [
-                "Lorem",
-                "Ipsum",
-                "Dolor",
-                "Sit",
-                "Amet",
-                "Vu",
-                "Vitae",
-                "Oportaet",
-                "Occuret",
-                "Eam",
-                "Alli"
-            ]
-            return availableWords.randomElement()!
-        }
-    }
-    
-    private static func randomSentence(word: Int) -> String {
-        var str = ""
-        for _ in 1...word {
-            str.append(randomWord + " ")
-        }
-        return str
-    }
-    
-    // MARK: Random Image
-    private static func getRandomImage() -> UIImage{
-        let possibleImages = [
-            "cornellC",
-            "cornell1",
-            "cornell2"
-        ]
-        return UIImage(named: possibleImages.randomElement()!)!
-    }
-    
-    // MARK: Random Post Type
-    private static var randomPostType : PostType {
-        get {
-            return PostType(rawValue: onlyShowNormalPosts ?
-                (1...5).randomElement() ?? 1 :
-                (1...6).randomElement() ?? 1)!
-        }
-    }
-    
-    enum PostType : Int {
-        // Normal Posts
-        case short = 1 // A short text post
-        case medium = 2 // A medium text post
-        case long = 3 // A long text post
-        case image = 4 // An Image Post with a caption
-        case imageCaptionless = 5 // An Image Post without a caption
-        // Wierd stuff
-        case noBody = 6 // A Text post with no text (or image)
+extension ClosedRange {
+    func clamp(_ value : Bound) -> Bound {
+        return self.lowerBound > value ? self.lowerBound
+            : self.upperBound < value ? self.upperBound
+            : value
     }
 }
