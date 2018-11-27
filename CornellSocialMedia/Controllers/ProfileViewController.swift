@@ -12,29 +12,29 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
 
     // MARK: - Parameters
     // UI Elements
-    var nameLabel: UILabel!
+    var profileNameLabel: UILabel!
     var profileImage: UIImageView!
-    var classLabel: UILabel!
-    var collegeLabel: UILabel!
-    var majorLabel: UILabel!
+    var profileClassLabel: UILabel!
+    var profileCollegeLabel: UILabel!
+    var profileMajorLabel: UILabel!
     var profileNavigator: UISegmentedControl!
     var profileNavigatorView: UICollectionView!
     
     //Collection View Elements
-    let peopleReuseIdentifier = "peopleReuseIdentifier"
+    let peopleViewReuseIdentifier = "peopleViewReuseIdentifier"
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // MARK: - UI Elements
-        nameLabel = UILabel()
-        nameLabel.text = "Gonzalo Gonzalez-Pumariega" //placeholder
+        profileNameLabel = UILabel()
+        profileNameLabel.text = "Gonzalo Gonzalez-Pumariega" //placeholder
         //should auto-resize font when too big to fit
         //not priority feature
-        nameLabel.font = UIFont.systemFont(ofSize: 20, weight: .bold)
-        nameLabel.textColor = .white
-        view.addSubview(nameLabel)
+        profileNameLabel.font = UIFont.systemFont(ofSize: 20, weight: .bold)
+        profileNameLabel.textColor = .white
+        view.addSubview(profileNameLabel)
         
         profileImage = UIImageView(image: UIImage(named: "cornell2"))
         profileImage.contentMode = .scaleAspectFill
@@ -44,23 +44,23 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
         profileImage.clipsToBounds = true
         view.addSubview(profileImage)
         
-        classLabel = UILabel()
-        classLabel.text = "Class of 2022" //placeholder
-        classLabel.font = UIFont.systemFont(ofSize: 18)
-        classLabel.textColor = .white
-        view.addSubview(classLabel)
+        profileClassLabel = UILabel()
+        profileClassLabel.text = "Class of 2022" //placeholder
+        profileClassLabel.font = UIFont.systemFont(ofSize: 18)
+        profileClassLabel.textColor = .white
+        view.addSubview(profileClassLabel)
         
-        collegeLabel = UILabel()
-        collegeLabel.text = "College of Engineering" //placeholder
-        collegeLabel.font = UIFont.systemFont(ofSize: 18)
-        collegeLabel.textColor = .white
-        view.addSubview(collegeLabel)
+        profileCollegeLabel = UILabel()
+        profileCollegeLabel.text = "College of Engineering" //placeholder
+        profileCollegeLabel.font = UIFont.systemFont(ofSize: 18)
+        profileCollegeLabel.textColor = .white
+        view.addSubview(profileCollegeLabel)
         
-        majorLabel = UILabel()
-        majorLabel.text = "Computer Science" //placeholder
-        majorLabel.font = UIFont.systemFont(ofSize: 18)
-        majorLabel.textColor = .white
-        view.addSubview(majorLabel)
+        profileMajorLabel = UILabel()
+        profileMajorLabel.text = "Computer Science" //placeholder
+        profileMajorLabel.font = UIFont.systemFont(ofSize: 18)
+        profileMajorLabel.textColor = .white
+        view.addSubview(profileMajorLabel)
         
         profileNavigator = UISegmentedControl()
         profileNavigator.insertSegment(withTitle: "Post History", at: 0, animated: true)
@@ -80,7 +80,7 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
         profileNavigatorView.delegate = self
         profileNavigatorView.dataSource = self
         profileNavigatorView.alwaysBounceVertical = true
-        profileNavigatorView.register(PeopleCollectionViewCell.self, forCellWithReuseIdentifier: peopleReuseIdentifier)
+        profileNavigatorView.register(PeopleCollectionViewCell.self, forCellWithReuseIdentifier: peopleViewReuseIdentifier)
         view.addSubview(profileNavigatorView)
         
         // MARK: Background
@@ -91,7 +91,7 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
     
     func setUpConstraints(){
         
-        nameLabel.snp.makeConstraints { (make) in
+        profileNameLabel.snp.makeConstraints { (make) in
             make.top.equalTo(view).offset(75)
             make.left.equalTo(view).offset(25)
             make.width.equalTo(375)
@@ -99,35 +99,35 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
         }
         
         profileImage.snp.makeConstraints { (make) in
-            make.top.equalTo(nameLabel).offset(50)
+            make.top.equalTo(profileNameLabel).offset(50)
             make.left.equalTo(view).offset(25)
             make.height.width.equalTo(100)
         }
         
-        classLabel.snp.makeConstraints { (make) in
+        profileClassLabel.snp.makeConstraints { (make) in
             make.top.equalTo(profileImage)
-            make.left.equalTo(nameLabel).offset(120)
+            make.left.equalTo(profileNameLabel).offset(120)
             make.width.equalTo(300)
             make.height.equalTo(20)
         }
         
-        collegeLabel.snp.makeConstraints { (make) in
-            make.top.equalTo(classLabel).offset(40)
-            make.left.equalTo(classLabel)
+        profileCollegeLabel.snp.makeConstraints { (make) in
+            make.top.equalTo(profileClassLabel).offset(40)
+            make.left.equalTo(profileClassLabel)
             make.width.equalTo(300)
             make.height.equalTo(20)
         }
         
-        majorLabel.snp.makeConstraints { (make) in
-            make.top.equalTo(collegeLabel).offset(40)
-            make.left.equalTo(collegeLabel)
+        profileMajorLabel.snp.makeConstraints { (make) in
+            make.top.equalTo(profileCollegeLabel).offset(40)
+            make.left.equalTo(profileCollegeLabel)
             make.width.equalTo(300)
             make.height.equalTo(20)
         }
         
         profileNavigator.snp.makeConstraints { (make) in
             make.left.right.equalTo(view)
-            make.top.equalTo(majorLabel).offset(50)
+            make.top.equalTo(profileMajorLabel).offset(50)
             make.height.equalTo(25)
         }
         
