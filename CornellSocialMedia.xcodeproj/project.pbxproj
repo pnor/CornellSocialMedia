@@ -16,8 +16,11 @@
 		4FA0577421A3B0BD000F0544 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4FA0577221A3B0BD000F0544 /* LaunchScreen.storyboard */; };
 		4FE1957B21AD006000EB434F /* Debugging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FE1957A21AD006000EB434F /* Debugging.swift */; };
 		4FF0560321A911350084E5FE /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FF0560221A911350084E5FE /* Post.swift */; };
-		873AA7AF21AACF640023A2C7 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 873AA7AE21AACF640023A2C7 /* ProfileViewController.swift */; };
-		879FB34E21AB19EC000FC6D0 /* PeopleCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 879FB34D21AB19EC000FC6D0 /* PeopleCollectionViewCell.swift */; };
+		87117C7521ADF2660071D2F7 /* People.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87117C7421ADF2660071D2F7 /* People.swift */; };
+		87117C7721ADF2740071D2F7 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87117C7621ADF2740071D2F7 /* ProfileViewController.swift */; };
+		87117C7B21ADF29F0071D2F7 /* PeopleCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87117C7821ADF29F0071D2F7 /* PeopleCollectionViewCell.swift */; };
+		87117C7C21ADF29F0071D2F7 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87117C7921ADF29F0071D2F7 /* SearchViewController.swift */; };
+		87117C7D21ADF29F0071D2F7 /* PeopleFilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87117C7A21ADF29F0071D2F7 /* PeopleFilterViewController.swift */; };
 		93D6C24190860A24FC1897AA /* Pods_CornellSocialMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 842AAB4DFEA9BA89D9ED410E /* Pods_CornellSocialMedia.framework */; };
 /* End PBXBuildFile section */
 
@@ -35,8 +38,11 @@
 		4FF0560221A911350084E5FE /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		61058FD23363D21014ACABC7 /* Pods-CornellSocialMedia.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CornellSocialMedia.release.xcconfig"; path = "Pods/Target Support Files/Pods-CornellSocialMedia/Pods-CornellSocialMedia.release.xcconfig"; sourceTree = "<group>"; };
 		842AAB4DFEA9BA89D9ED410E /* Pods_CornellSocialMedia.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CornellSocialMedia.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		873AA7AE21AACF640023A2C7 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
-		879FB34D21AB19EC000FC6D0 /* PeopleCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeopleCollectionViewCell.swift; sourceTree = "<group>"; };
+		87117C7421ADF2660071D2F7 /* People.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = People.swift; sourceTree = "<group>"; };
+		87117C7621ADF2740071D2F7 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		87117C7821ADF29F0071D2F7 /* PeopleCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeopleCollectionViewCell.swift; sourceTree = "<group>"; };
+		87117C7921ADF29F0071D2F7 /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
+		87117C7A21ADF29F0071D2F7 /* PeopleFilterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeopleFilterViewController.swift; sourceTree = "<group>"; };
 		D4BFF1282C8DE51CA1FC1667 /* Pods-CornellSocialMedia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CornellSocialMedia.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CornellSocialMedia/Pods-CornellSocialMedia.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -55,7 +61,9 @@
 		4F0A00C421A867CA00BF6EA9 /* CollectionViewCells */ = {
 			isa = PBXGroup;
 			children = (
-				879FB34D21AB19EC000FC6D0 /* PeopleCollectionViewCell.swift */,
+				87117C7821ADF29F0071D2F7 /* PeopleCollectionViewCell.swift */,
+				87117C7A21ADF29F0071D2F7 /* PeopleFilterViewController.swift */,
+				87117C7921ADF29F0071D2F7 /* SearchViewController.swift */,
 				4F0A00C521A8703700BF6EA9 /* MainFeedCollectionViewCell.swift */,
 			);
 			path = CollectionViewCells;
@@ -64,8 +72,8 @@
 		4F10CF1F21AB4B670068DE0F /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				87117C7621ADF2740071D2F7 /* ProfileViewController.swift */,
 				4FA0576B21A3B0BB000F0544 /* LoginViewController.swift */,
-				873AA7AE21AACF640023A2C7 /* ProfileViewController.swift */,
 				4F1404A021A7901B00490722 /* MainFeedViewController.swift */,
 			);
 			path = Controllers;
@@ -74,6 +82,7 @@
 		4F10CF2021AB4BBF0068DE0F /* Misc */ = {
 			isa = PBXGroup;
 			children = (
+				87117C7421ADF2660071D2F7 /* People.swift */,
 				4FE1957A21AD006000EB434F /* Debugging.swift */,
 				4F0D269621A738AA00AA8AB4 /* Gradient.swift */,
 				4FF0560221A911350084E5FE /* Post.swift */,
@@ -258,12 +267,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				4F0A00C621A8703700BF6EA9 /* MainFeedCollectionViewCell.swift in Sources */,
+				87117C7C21ADF29F0071D2F7 /* SearchViewController.swift in Sources */,
 				4FE1957B21AD006000EB434F /* Debugging.swift in Sources */,
 				4FA0576C21A3B0BB000F0544 /* LoginViewController.swift in Sources */,
 				4FA0576A21A3B0BB000F0544 /* AppDelegate.swift in Sources */,
-				879FB34E21AB19EC000FC6D0 /* PeopleCollectionViewCell.swift in Sources */,
-				873AA7AF21AACF640023A2C7 /* ProfileViewController.swift in Sources */,
+				87117C7521ADF2660071D2F7 /* People.swift in Sources */,
+				87117C7D21ADF29F0071D2F7 /* PeopleFilterViewController.swift in Sources */,
+				87117C7721ADF2740071D2F7 /* ProfileViewController.swift in Sources */,
 				4F0D269721A738AA00AA8AB4 /* Gradient.swift in Sources */,
+				87117C7B21ADF29F0071D2F7 /* PeopleCollectionViewCell.swift in Sources */,
 				4FF0560321A911350084E5FE /* Post.swift in Sources */,
 				4F1404A121A7901B00490722 /* MainFeedViewController.swift in Sources */,
 			);
