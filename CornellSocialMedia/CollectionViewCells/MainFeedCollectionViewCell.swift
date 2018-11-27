@@ -51,7 +51,7 @@ class MainFeedCollectionViewCell: UICollectionViewCell {
         
         contentView.applyGradient(with: [UIColor(hue: 0, saturation: 0.1, brightness: 1, alpha: 1), UIColor(hue: 0, saturation: 0, brightness: 1, alpha: 1)], gradient: .topLeftBottomRight)
         contentView.layer.masksToBounds = true
-        contentView.layer.cornerRadius = 20
+        contentView.layer.cornerRadius = 5
         
         updateConstraints()
     }

@@ -125,19 +125,17 @@ class MainFeedViewController: UIViewController, UICollectionViewDelegate, UIColl
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         var cell : UICollectionViewCell
-        let post = posts?[indexPath.row]
-        
-        cell = messagesCollection.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath)
-        if let feedCell = cell as? MainFeedCollectionViewCell {
-            feedCell.clean()
-            feedCell.maxLinesOfTextPost = maxLinesOfTextPost
-            feedCell.maxLinesOfCaption = maxLinesOfCaption
-            if let curPost = post {
-                feedCell.configure(with: curPost)
+        if let post = posts?[indexPath.row] {
+            cell = messagesCollection.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath)
+            if let feedCell = cell as? MainFeedCollectionViewCell {
+                feedCell.clean()
+                feedCell.maxLinesOfTextPost = maxLinesOfTextPost
+                feedCell.maxLinesOfCaption = maxLinesOfCaption
+                feedCell.configure(with: post)
             }
+            return cell
         }
-            
-        return cell
+        fatalError("No cell at that postition! IndexPath.row = \(indexPath.row)")
     }
     // MARK: UICollectionViewDelegate
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -147,28 +145,31 @@ class MainFeedViewController: UIViewController, UICollectionViewDelegate, UIColl
     // MARK: UICollectionViewDelegateFlowLayout
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if let post = posts?[indexPath.row] {
-            if post.text == nil && post.image == nil { // A Blank Post
-                return CGSize(width: UIScreen.main.bounds.width - CGFloat(padding * 2), height: blankMessageHeight)
-            }
-            
-            let textHeight : CGFloat
-            if post.image == nil { // text post
-                textHeight = CGFloat(((1...maxLinesOfTextPost).clamp((post.text?.count ?? 0) / charactersPerLine) + 1) * lineSize)
-            } else { // image post
-                textHeight = CGFloat(( (1...maxLinesOfCaption).clamp((post.text?.count ?? 0) / charactersPerLine) + 1) * lineSize)
-            }
-            
             print("At indexPath: \(indexPath.row)")
-            print(post.image == nil ? "Text" : post.text == nil ? "Image" : "Image Cap")
-            let size = CGSize(width: UIScreen.main.bounds.width - CGFloat(padding * 2),
-                              height: post.image == nil ?
-                                messageBaseheight + textHeight : // text post height
-                                imageMessageBaseHeight + textHeight) // image post height
-            print("Size: \(size)")
-            return size
-            
+            return sizeForPost(post: post)
         }
         fatalError("the post index was outta bounds!")
+    }
+    
+    
+    //MARK: - Display Utility Methods
+    func sizeForPost(post: Post) -> CGSize {
+        if post.text == nil && post.image == nil { // A Blank Post
+            return CGSize(width: UIScreen.main.bounds.width - CGFloat(padding * 2), height: blankMessageHeight)
+        }
+        
+        let textHeight : CGFloat
+        if post.image == nil { // text post
+            textHeight = CGFloat(((1...maxLinesOfTextPost).clamp((post.text?.count ?? 0) / charactersPerLine) + 1) * lineSize)
+        } else { // image post
+            textHeight = CGFloat(( (1...maxLinesOfCaption).clamp((post.text?.count ?? 0) / charactersPerLine) + 1) * lineSize)
+        }
+        
+        let size = CGSize(width: UIScreen.main.bounds.width - CGFloat(padding * 2),
+                          height: post.image == nil ?
+                            messageBaseheight + textHeight : // text post height
+                            imageMessageBaseHeight + textHeight) // image post height
+        return size
     }
 }
 
