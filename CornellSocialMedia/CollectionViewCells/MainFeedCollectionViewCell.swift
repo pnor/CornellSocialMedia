@@ -29,8 +29,7 @@ class MainFeedCollectionViewCell: UICollectionViewCell {
     let iconSize = 40
     let padding = 20
     // With Image
-    let imageIconSize = 30
-    let imagePadding = 20
+    let imagePadding = 30
     let imageSmallPadding = 10
     
     override init(frame: CGRect) {
@@ -109,7 +108,7 @@ class MainFeedCollectionViewCell: UICollectionViewCell {
             }
         } else { // image + blank posts
             textBody?.snp.makeConstraints { (make) in
-                make.bottom.equalTo(contentView).offset(-imagePadding)
+                make.bottom.equalTo(contentView).offset(-imageSmallPadding)
                 make.leading.equalTo(contentView).offset(imagePadding)
                 make.trailing.equalTo(contentView).offset(-imagePadding)
             }
@@ -118,7 +117,7 @@ class MainFeedCollectionViewCell: UICollectionViewCell {
                 make.leading.equalTo(contentView).offset(imagePadding)
                 make.trailing.equalTo(contentView).offset(-imagePadding)
                 if let textBodyLabel = textBody {
-                    make.bottom.equalTo(textBodyLabel).offset(-imageSmallPadding)
+                    make.bottom.equalTo(textBodyLabel.snp.top).offset(-imageSmallPadding)
                 } else {
                     make.bottom.equalTo(contentView).offset(-imageSmallPadding)
                 }
@@ -127,18 +126,20 @@ class MainFeedCollectionViewCell: UICollectionViewCell {
     }
     
     func configureTextBody(type: PostType, postText: String) {
-        textBody = UILabel()
-        textBody?.backgroundColor = .gray
         switch(type) {
         case .textPost:
+            textBody = UILabel()
             if let textBodyLabel = textBody {
+                textBodyLabel.backgroundColor = .gray
                 textBodyLabel.text = postText
                 textBodyLabel.numberOfLines = maxLinesOfTextPost
                 textBodyLabel.sizeToFit()
                 contentView.addSubview(textBodyLabel)
             }
         case .imagePost:
+            textBody = UILabel()
             if let textBodyLabel = textBody {
+                textBodyLabel.backgroundColor = .gray
                 textBodyLabel.text = postText
                 textBodyLabel.numberOfLines = maxLinesOfCaption
                 textBodyLabel.sizeToFit()
@@ -154,10 +155,11 @@ class MainFeedCollectionViewCell: UICollectionViewCell {
         case .imagePost:
             image = UIImageView()
             image?.bounds = CGRect(x: 0, y: 0, width: contentView.bounds.width - CGFloat(imagePadding * 2), height: contentView.bounds.height - CGFloat((imagePadding * 3) - (imageSmallPadding) - iconSize))
-            image?.layer.cornerRadius = 20
+            image?.layer.cornerRadius = 5
             image?.layer.masksToBounds = true
             image?.clipsToBounds = true
             image?.contentMode = .scaleAspectFit
+            image?.backgroundColor = .black
             if let postMainImage = image {
                 postMainImage.image = mainImage
                 contentView.addSubview(postMainImage)
@@ -165,7 +167,7 @@ class MainFeedCollectionViewCell: UICollectionViewCell {
         case .imagePostNoCaption:
             image = UIImageView()
             image?.bounds = CGRect(x: 0, y: 0, width: contentView.bounds.width - CGFloat(imagePadding * 2), height: contentView.bounds.height - CGFloat((imagePadding * 3) - (imageSmallPadding) - iconSize))
-            image?.layer.cornerRadius = 20
+            image?.layer.cornerRadius = 5
             image?.layer.masksToBounds = true
             image?.clipsToBounds = true
             image?.contentMode = .scaleAspectFit
@@ -177,6 +179,17 @@ class MainFeedCollectionViewCell: UICollectionViewCell {
         default:
             return
         }
+    }
+    
+    // Sets all potentially nil UI Elements to nil so they don't persist when being recycled
+    func clean() {
+        //textBody?.removeFromSuperview()
+        //image?.removeFromSuperview()
+        contentView.snp.removeConstraints()
+        image?.removeFromSuperview()
+        textBody?.removeFromSuperview()
+        image = nil
+        textBody = nil
     }
 }
 
