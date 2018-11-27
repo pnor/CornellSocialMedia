@@ -15,6 +15,7 @@
 		873AA7AF21AACF640023A2C7 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 873AA7AE21AACF640023A2C7 /* ProfileViewController.swift */; };
 		875357A621AB3E880077FBB8 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 875357A521AB3E880077FBB8 /* SearchViewController.swift */; };
 		875357A821AB47E10077FBB8 /* People.swift in Sources */ = {isa = PBXBuildFile; fileRef = 875357A721AB47E10077FBB8 /* People.swift */; };
+		875357AA21AD0D450077FBB8 /* PeopleFilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 875357A921AD0D450077FBB8 /* PeopleFilterViewController.swift */; };
 		879FB34E21AB19EC000FC6D0 /* PeopleCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 879FB34D21AB19EC000FC6D0 /* PeopleCollectionViewCell.swift */; };
 		93D6C24190860A24FC1897AA /* Pods_CornellSocialMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 842AAB4DFEA9BA89D9ED410E /* Pods_CornellSocialMedia.framework */; };
 /* End PBXBuildFile section */
@@ -32,6 +33,7 @@
 		873AA7AE21AACF640023A2C7 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		875357A521AB3E880077FBB8 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		875357A721AB47E10077FBB8 /* People.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = People.swift; sourceTree = "<group>"; };
+		875357A921AD0D450077FBB8 /* PeopleFilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeopleFilterViewController.swift; sourceTree = "<group>"; };
 		879FB34D21AB19EC000FC6D0 /* PeopleCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeopleCollectionViewCell.swift; sourceTree = "<group>"; };
 		D4BFF1282C8DE51CA1FC1667 /* Pods-CornellSocialMedia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CornellSocialMedia.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CornellSocialMedia/Pods-CornellSocialMedia.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -74,6 +76,7 @@
 				873AA7AE21AACF640023A2C7 /* ProfileViewController.swift */,
 				879FB34D21AB19EC000FC6D0 /* PeopleCollectionViewCell.swift */,
 				875357A521AB3E880077FBB8 /* SearchViewController.swift */,
+				875357A921AD0D450077FBB8 /* PeopleFilterViewController.swift */,
 				875357A721AB47E10077FBB8 /* People.swift */,
 				4FA0577021A3B0BD000F0544 /* Assets.xcassets */,
 				4FA0577221A3B0BD000F0544 /* LaunchScreen.storyboard */,
@@ -229,6 +232,7 @@
 			files = (
 				875357A621AB3E880077FBB8 /* SearchViewController.swift in Sources */,
 				4FA0576C21A3B0BB000F0544 /* LoginViewController.swift in Sources */,
+				875357AA21AD0D450077FBB8 /* PeopleFilterViewController.swift in Sources */,
 				4FA0576A21A3B0BB000F0544 /* AppDelegate.swift in Sources */,
 				879FB34E21AB19EC000FC6D0 /* PeopleCollectionViewCell.swift in Sources */,
 				873AA7AF21AACF640023A2C7 /* ProfileViewController.swift in Sources */,
@@ -373,6 +377,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 6G67Q4GKFB;
 				INFOPLIST_FILE = CornellSocialMedia/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -391,6 +396,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 6G67Q4GKFB;
 				INFOPLIST_FILE = CornellSocialMedia/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
