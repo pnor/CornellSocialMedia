@@ -55,7 +55,6 @@
 			children = (
 				879FB34D21AB19EC000FC6D0 /* PeopleCollectionViewCell.swift */,
 				4F0A00C521A8703700BF6EA9 /* MainFeedCollectionViewCell.swift */,
-				879FB34D21AB19EC000FC6D0 /* PeopleCollectionViewCell.swift */,
 			);
 			path = CollectionViewCells;
 			sourceTree = "<group>";
@@ -66,8 +65,6 @@
 				4FA0576B21A3B0BB000F0544 /* LoginViewController.swift */,
 				873AA7AE21AACF640023A2C7 /* ProfileViewController.swift */,
 				4F1404A021A7901B00490722 /* MainFeedViewController.swift */,
-				875357A921AD0D450077FBB8 /* PeopleFilterViewController.swift */,
-				875357A521AB3E880077FBB8 /* SearchViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -77,7 +74,6 @@
 			children = (
 				4F0D269621A738AA00AA8AB4 /* Gradient.swift */,
 				4FF0560221A911350084E5FE /* Post.swift */,
-				875357A721AB47E10077FBB8 /* People.swift */,
 			);
 			path = Misc;
 			sourceTree = "<group>";
