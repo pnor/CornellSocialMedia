@@ -96,7 +96,8 @@ class MainFeedViewController: UIViewController, UICollectionViewDelegate, UIColl
     }
     
     @objc func goToSearch() {
-        print("Going to Search")
+        let peopleSearch = SearchViewController()
+        navigationController?.pushViewController(peopleSearch, animated: true)
     }
     
     @objc func refresh() {
