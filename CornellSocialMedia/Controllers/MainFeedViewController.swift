@@ -42,7 +42,7 @@ class MainFeedViewController: UIViewController, UICollectionViewDelegate, UIColl
         // MARK: UI Elements
         navigationController?.setNavigationBarHidden(false, animated: true)
         navigationController?.navigationBar.isTranslucent = true
-        navigationController?.navigationBar.tintColor = .red
+        navigationController?.navigationBar.tintColor = .white
         title = "Main Feed"
         
         search = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(goToSearch))
@@ -132,6 +132,7 @@ class MainFeedViewController: UIViewController, UICollectionViewDelegate, UIColl
                 feedCell.clean()
                 feedCell.maxLinesOfTextPost = maxLinesOfTextPost
                 feedCell.maxLinesOfCaption = maxLinesOfCaption
+                feedCell.frame(forAlignmentRect: CGRect(origin: CGPoint(x: 0, y: 0), size: sizeForPost(post: post)))
                 feedCell.configure(with: post)
             }
             return cell
