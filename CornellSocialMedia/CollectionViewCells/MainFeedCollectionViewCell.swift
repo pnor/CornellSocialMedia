@@ -89,8 +89,8 @@ class MainFeedCollectionViewCell: UICollectionViewCell {
     override func updateConstraints() {
         super.updateConstraints()
         profileIcon.snp.makeConstraints { (make) in
-            make.top.equalTo(contentView).offset(padding)
-            make.leading.equalTo(contentView).offset(padding)
+            make.top.equalToSuperview().offset(padding)
+            make.leading.equalToSuperview().offset(padding)
             make.size.equalTo(iconSize)
         }
         nametag.snp.makeConstraints { (make) in
@@ -102,24 +102,24 @@ class MainFeedCollectionViewCell: UICollectionViewCell {
         if postType == .textPost { // text posts
             textBody?.snp.makeConstraints { (make) in
                 make.top.equalTo(profileIcon).offset(3 * padding)
-                make.leading.equalTo(contentView).offset(padding)
-                make.trailing.equalTo(contentView).offset(-padding)
-                make.bottom.equalTo(contentView).offset(-padding)
+                make.leading.equalToSuperview().offset(padding)
+                make.trailing.equalToSuperview().offset(-padding)
+                make.bottom.equalToSuperview().offset(-padding)
             }
         } else { // image + blank posts
             textBody?.snp.makeConstraints { (make) in
-                make.bottom.equalTo(contentView).offset(-imageSmallPadding)
-                make.leading.equalTo(contentView).offset(imagePadding)
-                make.trailing.equalTo(contentView).offset(-imagePadding)
+                make.bottom.equalToSuperview().offset(-imageSmallPadding)
+                make.leading.equalToSuperview().offset(imagePadding)
+                make.trailing.equalToSuperview().offset(-imagePadding)
             }
             image?.snp.makeConstraints { (make) in
                 make.top.equalTo(nametag.snp.bottom).offset(padding)
-                make.leading.equalTo(contentView).offset(imagePadding)
-                make.trailing.equalTo(contentView).offset(-imagePadding)
+                make.leading.equalToSuperview().offset(imagePadding)
+                make.trailing.equalToSuperview().offset(-imagePadding)
                 if let textBodyLabel = textBody {
                     make.bottom.equalTo(textBodyLabel.snp.top).offset(-imageSmallPadding)
                 } else {
-                    make.bottom.equalTo(contentView).offset(-imageSmallPadding)
+                    make.bottom.equalToSuperview().offset(-imageSmallPadding)
                 }
             }
         }

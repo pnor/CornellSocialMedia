@@ -55,6 +55,7 @@ class MainFeedViewController: UIViewController, UICollectionViewDelegate, UIColl
         messageLayout.scrollDirection = .vertical
         messageLayout.minimumLineSpacing = padding
         messageLayout.minimumInteritemSpacing = 1000000
+        messageLayout.estimatedItemSize = CGSize(width: UIScreen.main.bounds.width - CGFloat(padding * 2), height: 400)
         
         messagesCollection = UICollectionView(frame: .zero, collectionViewLayout: messageLayout)
         messagesCollection.delegate = self
@@ -145,14 +146,14 @@ class MainFeedViewController: UIViewController, UICollectionViewDelegate, UIColl
         return
     }
     // MARK: UICollectionViewDelegateFlowLayout
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        if let post = posts?[indexPath.row] {
-            print("At indexPath: \(indexPath.row)")
-            return sizeForPost(post: post)
-        }
-        fatalError("the post index was outta bounds!")
-    }
-    
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+//        if let post = posts?[indexPath.row] {
+//            print("At indexPath: \(indexPath.row)")
+//            return sizeForPost(post: post)
+//        }
+//        fatalError("the post index was outta bounds!")
+//    }
+
     
     //MARK: - Display Utility Methods
     func sizeForPost(post: Post) -> CGSize {
