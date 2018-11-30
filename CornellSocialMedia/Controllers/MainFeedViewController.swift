@@ -27,7 +27,7 @@ class MainFeedViewController: UIViewController, UICollectionViewDelegate, UIColl
     var posts : [Post]?  // Full of dummy Posts rn until Networking Happens
     let maxPosts = 30 // Loaded in memory
     let maxLinesOfTextPost = 10
-    let maxLinesOfCaption = 1
+    let maxLinesOfCaption = 2
     
     // Padding and Sizing
     let padding : CGFloat = 20
@@ -55,7 +55,7 @@ class MainFeedViewController: UIViewController, UICollectionViewDelegate, UIColl
         messageLayout.scrollDirection = .vertical
         messageLayout.minimumLineSpacing = padding
         messageLayout.minimumInteritemSpacing = 1000000
-        messageLayout.estimatedItemSize = CGSize(width: UIScreen.main.bounds.width - CGFloat(padding * 2), height: 400)
+        messageLayout.estimatedItemSize = CGSize(width: UIScreen.main.bounds.width - CGFloat(padding * 2), height: 350)
         
         messagesCollection = UICollectionView(frame: .zero, collectionViewLayout: messageLayout)
         messagesCollection.delegate = self
@@ -133,27 +133,19 @@ class MainFeedViewController: UIViewController, UICollectionViewDelegate, UIColl
                 feedCell.clean()
                 feedCell.maxLinesOfTextPost = maxLinesOfTextPost
                 feedCell.maxLinesOfCaption = maxLinesOfCaption
-                feedCell.frame(forAlignmentRect: CGRect(origin: CGPoint(x: 0, y: 0), size: sizeForPost(post: post)))
+                feedCell.isHeightCalculated = false
                 feedCell.configure(with: post)
             }
             return cell
         }
         fatalError("No cell at that postition! IndexPath.row = \(indexPath.row)")
     }
+    
     // MARK: UICollectionViewDelegate
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("selected \(String(describing: posts?[indexPath.row])) Should go to another screen")
         return
     }
-    // MARK: UICollectionViewDelegateFlowLayout
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//        if let post = posts?[indexPath.row] {
-//            print("At indexPath: \(indexPath.row)")
-//            return sizeForPost(post: post)
-//        }
-//        fatalError("the post index was outta bounds!")
-//    }
-
     
     //MARK: - Display Utility Methods
     func sizeForPost(post: Post) -> CGSize {

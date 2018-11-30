@@ -22,6 +22,8 @@ class MainFeedCollectionViewCell: UICollectionViewCell {
     var textBody : UILabel?
     var image : UIImageView?
     
+    // Self Sizing
+    public var isHeightCalculated = false
     // Position and Size Constants
     public var maxLinesOfTextPost = 1
     public var maxLinesOfCaption = 1
@@ -31,6 +33,7 @@ class MainFeedCollectionViewCell: UICollectionViewCell {
     // With Image
     let imagePadding = 30
     let imageSmallPadding = 10
+    let imageHeight = 200
     
     override init(frame: CGRect) {
         // MARK: - Initialize UI Elements
@@ -88,6 +91,9 @@ class MainFeedCollectionViewCell: UICollectionViewCell {
     
     override func updateConstraints() {
         super.updateConstraints()
+        contentView.snp.makeConstraints { (make) in
+            make.width.equalTo(UIScreen.main.bounds.width - CGFloat(padding * 2))
+        }
         profileIcon.snp.makeConstraints { (make) in
             make.top.equalToSuperview().offset(padding)
             make.leading.equalToSuperview().offset(padding)
@@ -116,6 +122,7 @@ class MainFeedCollectionViewCell: UICollectionViewCell {
                 make.top.equalTo(nametag.snp.bottom).offset(padding)
                 make.leading.equalToSuperview().offset(imagePadding)
                 make.trailing.equalToSuperview().offset(-imagePadding)
+                make.height.equalTo(imageHeight)
                 if let textBodyLabel = textBody {
                     make.bottom.equalTo(textBodyLabel.snp.top).offset(-imageSmallPadding)
                 } else {
@@ -183,13 +190,24 @@ class MainFeedCollectionViewCell: UICollectionViewCell {
     
     // Sets all potentially nil UI Elements to nil so they don't persist when being recycled
     func clean() {
-        //textBody?.removeFromSuperview()
-        //image?.removeFromSuperview()
         contentView.snp.removeConstraints()
         image?.removeFromSuperview()
         textBody?.removeFromSuperview()
         image = nil
         textBody = nil
+    }
+    
+    override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
+        if !isHeightCalculated {
+            setNeedsLayout()
+            layoutIfNeeded()
+            let size = contentView.systemLayoutSizeFitting(layoutAttributes.size)
+            var newFrame = layoutAttributes.frame
+            newFrame.size.width = CGFloat(ceilf(Float(size.width)))
+            layoutAttributes.frame = newFrame
+            isHeightCalculated = true
+        }
+        return layoutAttributes
     }
 }
 
