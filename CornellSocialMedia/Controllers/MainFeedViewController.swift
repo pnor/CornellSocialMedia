@@ -82,7 +82,8 @@ class MainFeedViewController: UIViewController, UICollectionViewDelegate, UIColl
         // MARK: Animations
         hero.isEnabled = true
         view.hero.id = "backdrop"
-        view.applyGradient(with: [UIColor(hue: 0, saturation: 0.8, brightness: 1, alpha: 1), UIColor(hue: 0, saturation: 1, brightness: 1, alpha: 0.5)], gradient: .topLeftBottomRight)
+        view.applyGradient(with: [.red, UIColor(hue: 0, saturation: 1, brightness: 1, alpha: 0.3)])
+//        view.applyGradient(with: [UIColor.lightGray, UIColor(hue: 0, saturation: 1, brightness: 1, alpha: 0.3)], gradient: .topLeftBottomRight)
         view.backgroundColor = .white
         
         //TODO Get Post Data

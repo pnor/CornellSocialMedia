@@ -143,7 +143,6 @@ class MainFeedCollectionViewCell: UICollectionViewCell {
         case .textPost:
             textBody = UILabel()
             if let textBodyLabel = textBody {
-                textBodyLabel.backgroundColor = .gray
                 textBodyLabel.text = postText
                 textBodyLabel.numberOfLines = maxLinesOfTextPost
                 textBodyLabel.sizeToFit()
@@ -152,7 +151,6 @@ class MainFeedCollectionViewCell: UICollectionViewCell {
         case .imagePost:
             textBody = UILabel()
             if let textBodyLabel = textBody {
-                textBodyLabel.backgroundColor = .gray
                 textBodyLabel.text = postText
                 textBodyLabel.numberOfLines = maxLinesOfCaption
                 textBodyLabel.sizeToFit()
