@@ -18,6 +18,7 @@ class MainFeedViewController: UIViewController, UICollectionViewDelegate, UIColl
     
     // Main Display
     var messagesCollection : UICollectionView!
+    var messagesLayout : UICollectionViewFlowLayout!
     var reuseIdentifier = "messagesReuseIdentifier"
     
     // Refresh Control
@@ -31,11 +32,14 @@ class MainFeedViewController: UIViewController, UICollectionViewDelegate, UIColl
     
     // Padding and Sizing
     let padding : CGFloat = 20
-    let messageBaseheight : CGFloat = 80 // accounts for nametag and profile icon
-    let imageMessageBaseHeight : CGFloat = 240 // accounts for nametag, icon, and picture
-    let blankMessageHeight : CGFloat = 130
     let charactersPerLine = 35 // an estimate
-    let lineSize = 24 // also an estimate
+    let lineSize = 22 // also an estimate
+    var largestCellHeight : CGFloat = 0
+    var smallestCellHeight : CGFloat = 0
+    // Usual Message Heights
+    let blankMessageHeight : CGFloat = 80
+    let textMessageBaseHeight : CGFloat = 80
+    let imageMessageBaseHeight : CGFloat = 100
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,13 +55,13 @@ class MainFeedViewController: UIViewController, UICollectionViewDelegate, UIColl
         profile = UIBarButtonItem(barButtonSystemItem: .bookmarks, target: self, action: #selector(goToProfile))
         navigationItem.rightBarButtonItem = profile
         
-        let messageLayout = UICollectionViewFlowLayout()
-        messageLayout.scrollDirection = .vertical
-        messageLayout.minimumLineSpacing = padding
-        messageLayout.minimumInteritemSpacing = 1000000
-        messageLayout.estimatedItemSize = CGSize(width: UIScreen.main.bounds.width - CGFloat(padding * 2), height: 350)
+        messagesLayout = UICollectionViewFlowLayout()
+        messagesLayout.scrollDirection = .vertical
+        messagesLayout.minimumInteritemSpacing = 1000000
+        messagesLayout.minimumLineSpacing = padding
+        messagesLayout.estimatedItemSize = CGSize(width: UIScreen.main.bounds.width - CGFloat(padding * 2), height: 340)
         
-        messagesCollection = UICollectionView(frame: .zero, collectionViewLayout: messageLayout)
+        messagesCollection = UICollectionView(frame: .zero, collectionViewLayout: messagesLayout)
         messagesCollection.delegate = self
         messagesCollection.dataSource = self
         messagesCollection.alwaysBounceVertical = true
@@ -68,7 +72,11 @@ class MainFeedViewController: UIViewController, UICollectionViewDelegate, UIColl
         // Refresh Control
         refreshControl = UIRefreshControl()
         refreshControl.tintColor = .white
-        messagesCollection.addSubview(refreshControl)
+        if #available(iOS 10.0, *) {
+            messagesCollection.refreshControl = refreshControl
+        } else {
+            messagesCollection.addSubview(refreshControl)
+        }
         refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
 
         // MARK: Animations
@@ -78,7 +86,7 @@ class MainFeedViewController: UIViewController, UICollectionViewDelegate, UIColl
         view.backgroundColor = .white
         
         //TODO Get Post Data
-        refresh()
+        posts = getPosts()
         messagesCollection.reloadData()
         
         setupConstraints()
@@ -103,26 +111,44 @@ class MainFeedViewController: UIViewController, UICollectionViewDelegate, UIColl
     
     @objc func refresh() {
         print("Refresh")
+        // Update all cell heights
+        let timer = Timer(timeInterval: 1.0, repeats: false, block: { (timer) in
+            DispatchQueue.main.async {
+                self.posts = self.getPosts()
+                print("-----")
+                print(self.posts ?? "Nothing...😨")
+                self.messagesCollection.reloadData()
+            }
+            self.refreshControl.endRefreshing()
+        })
+        timer.fire()
+    }
+    
+    func getPosts() -> [Post] {
         // Get some posts:
         // Debug Vars
-        let useRandomGenerated = false
-        let generatedTypes : [Debugging.PostType] = [.short, .medium, .long, .image, .imageCaptionless]
+        let useRandomGenerated = true
+        let generatedTypes : [Debugging.PostType] = [.image, .short, .medium, .long]
         
-        posts = []
+        var curPosts : [Post] = []
         if useRandomGenerated { // random
             for _ in 1...maxPosts {
-                posts?.append(Debugging.getPostType(generatedTypes))
+                curPosts.append(Debugging.getPostType(generatedTypes))
             }
         } else { // pre made set
-            posts? = Debugging.getDefaultPosts()
+            posts = Debugging.getDefaultPosts()
         }
-        print(posts ?? "Nothing...😨")
+        return curPosts
     }
     
     // MARK: - Collection View Methods
     // MARK: UICollectionViewDataSource
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return posts?.count ?? 0
+    }
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -147,6 +173,26 @@ class MainFeedViewController: UIViewController, UICollectionViewDelegate, UIColl
         return
     }
     
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return  messagesLayout.estimatedItemSize
+        
+        if let post = posts?[indexPath.row] {
+            if post.image == nil {
+                return CGSize(width: messagesLayout.estimatedItemSize.width, height: sizeForPost(post: posts![indexPath.row]).height)
+            } else {
+                return messagesLayout.estimatedItemSize
+            }
+        }
+        fatalError("no post for this position!")
+    }
+    
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+//        print("Height: \(cellHeights?[section] ?? 0)   nil? \(cellHeights == nil)")
+//        print("Section: \(section)")
+//        print("returns... \(padding - largestCellHeight - (cellHeights?[section] ?? 0))")
+//        return padding + largestCellHeight - (cellHeights?[section] ?? 0)
+//    }
+    
     //MARK: - Display Utility Methods
     func sizeForPost(post: Post) -> CGSize {
         if post.text == nil && post.image == nil { // A Blank Post
@@ -157,12 +203,12 @@ class MainFeedViewController: UIViewController, UICollectionViewDelegate, UIColl
         if post.image == nil { // text post
             textHeight = CGFloat(((1...maxLinesOfTextPost).clamp((post.text?.count ?? 0) / charactersPerLine) + 1) * lineSize)
         } else { // image post
-            textHeight = CGFloat(( (1...maxLinesOfCaption).clamp((post.text?.count ?? 0) / charactersPerLine) + 1) * lineSize)
+            textHeight = CGFloat(((1...maxLinesOfCaption).clamp((post.text?.count ?? 0) / charactersPerLine) + 1) * lineSize)
         }
         
         let size = CGSize(width: UIScreen.main.bounds.width - CGFloat(padding * 2),
                           height: post.image == nil ?
-                            messageBaseheight + textHeight : // text post height
+                            textMessageBaseHeight + textHeight : // text post height
                             imageMessageBaseHeight + textHeight) // image post height
         return size
     }

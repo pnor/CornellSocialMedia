@@ -46,6 +46,7 @@ class MainFeedCollectionViewCell: UICollectionViewCell {
         profileIcon.layer.masksToBounds = true
         profileIcon.clipsToBounds = true
         profileIcon.contentMode = .scaleAspectFit
+        profileIcon.backgroundColor = .black
         contentView.addSubview(profileIcon)
         
         nametag = UILabel()
@@ -59,8 +60,6 @@ class MainFeedCollectionViewCell: UICollectionViewCell {
         updateConstraints()
     }
     
-    
-    
     required init?(coder: NSCoder) {
         fatalError("not implemented")
     }
@@ -71,6 +70,7 @@ class MainFeedCollectionViewCell: UICollectionViewCell {
             postType = .textPost
             configureTextBody(type: .textPost, postText: postText)
         } else if let postText = post.text, let postImage = post.image { // Image Post with Caption
+            print("??")
             postType = .imagePost
 
             configureTextBody(type: .imagePost, postText: postText)
@@ -94,6 +94,7 @@ class MainFeedCollectionViewCell: UICollectionViewCell {
         contentView.snp.makeConstraints { (make) in
             make.width.equalTo(UIScreen.main.bounds.width - CGFloat(padding * 2))
         }
+        
         profileIcon.snp.makeConstraints { (make) in
             make.top.equalToSuperview().offset(padding)
             make.leading.equalToSuperview().offset(padding)
@@ -112,22 +113,27 @@ class MainFeedCollectionViewCell: UICollectionViewCell {
                 make.trailing.equalToSuperview().offset(-padding)
                 make.bottom.equalToSuperview().offset(-padding)
             }
-        } else { // image + blank posts
+        } else if postType == .imagePost || postType == .imagePostNoCaption { // image posts
             textBody?.snp.makeConstraints { (make) in
-                make.bottom.equalToSuperview().offset(-imageSmallPadding)
+                make.top.equalTo(nametag.snp.bottom).offset(imageSmallPadding * 2)
                 make.leading.equalToSuperview().offset(imagePadding)
                 make.trailing.equalToSuperview().offset(-imagePadding)
             }
             image?.snp.makeConstraints { (make) in
-                make.top.equalTo(nametag.snp.bottom).offset(padding)
+                if let text = textBody {
+                    print("?")
+                    make.top.equalTo(text.snp.bottom).offset(padding)
+                } else {
+                    make.top.equalTo(nametag.snp.bottom).offset(padding)
+                }
                 make.leading.equalToSuperview().offset(imagePadding)
                 make.trailing.equalToSuperview().offset(-imagePadding)
                 make.height.equalTo(imageHeight)
-                if let textBodyLabel = textBody {
-                    make.bottom.equalTo(textBodyLabel.snp.top).offset(-imageSmallPadding)
-                } else {
-                    make.bottom.equalToSuperview().offset(-imageSmallPadding)
-                }
+                make.bottom.equalToSuperview().offset(-imageSmallPadding)
+            }
+        } else { // blank posts
+            contentView.snp.makeConstraints { (make) in
+                make.height.equalTo(80)
             }
         }
     }
