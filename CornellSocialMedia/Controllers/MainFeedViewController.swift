@@ -40,6 +40,9 @@ class MainFeedViewController: UIViewController, UICollectionViewDelegate, UIColl
     let blankMessageHeight : CGFloat = 80
     let textMessageBaseHeight : CGFloat = 80
     let imageMessageBaseHeight : CGFloat = 100
+    
+    // Transitions / Animations
+    var transitionDirection = 0 /// 1 : Right -1 : Left
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,6 +50,9 @@ class MainFeedViewController: UIViewController, UICollectionViewDelegate, UIColl
         navigationController?.setNavigationBarHidden(false, animated: true)
         navigationController?.navigationBar.isTranslucent = true
         navigationController?.navigationBar.tintColor = .white
+        navigationController?.navigationBar.barTintColor = UIColor(displayP3Red: 179/255, green: 27/255, blue: 27/255, alpha: 1.0)
+        let textAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+        navigationController?.navigationBar.titleTextAttributes = textAttributes
         title = "Main Feed"
         
         search = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(goToSearch))
@@ -82,8 +88,10 @@ class MainFeedViewController: UIViewController, UICollectionViewDelegate, UIColl
         // MARK: Animations
         hero.isEnabled = true
         view.hero.id = "backdrop"
-        view.applyGradient(with: [.red, UIColor(hue: 0, saturation: 1, brightness: 1, alpha: 0.3)])
-//        view.applyGradient(with: [UIColor.lightGray, UIColor(hue: 0, saturation: 1, brightness: 1, alpha: 0.3)], gradient: .topLeftBottomRight)
+        view.applyGradient(with: [
+            UIColor(hue: 0, saturation: 1, brightness: 1, alpha: 0.3),
+            UIColor(hue: 0, saturation: 1, brightness: 1, alpha: 0.6)],
+                        gradient: GradientOrientation.topLeftBottomRight)
         view.backgroundColor = .white
         
         //TODO Get Post Data
@@ -106,8 +114,7 @@ class MainFeedViewController: UIViewController, UICollectionViewDelegate, UIColl
     }
     
     @objc func goToSearch() {
-        let peopleSearch = SearchViewController()
-        navigationController?.pushViewController(peopleSearch, animated: true)
+        navigationController?.pushViewController(SearchViewController(), animated: true)
     }
     
     @objc func refresh() {

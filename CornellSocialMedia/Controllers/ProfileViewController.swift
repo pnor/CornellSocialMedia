@@ -9,7 +9,7 @@
 import UIKit
 
 class ProfileViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout  {
-
+    
     // MARK: - Parameters
     // UI Elements
     var profileNameLabel: UILabel!
@@ -19,6 +19,8 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
     var profileMajorLabel: UILabel!
     var profileNavigator: UISegmentedControl!
     var profileNavigatorView: UICollectionView!
+    
+    var backButton: UIBarButtonItem!
     
     //Collection View Elements
     let peopleViewReuseIdentifier = "peopleViewReuseIdentifier"
@@ -83,13 +85,30 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
         profileNavigatorView.register(PeopleCollectionViewCell.self, forCellWithReuseIdentifier: peopleViewReuseIdentifier)
         view.addSubview(profileNavigatorView)
         
+        backButton = UIBarButtonItem()
+        backButton.title = "<Back"
+        backButton.target = self
+        backButton.tintColor = .white
+        backButton.action = #selector(goBack)
+        navigationItem.leftBarButtonItem = backButton
+        navigationItem.hidesBackButton = true
+        
         // MARK: Background
         view.backgroundColor = .white
-        view.applyGradient(with: [UIColor(displayP3Red: 100.0/255.0, green: 10.0/255.0, blue: 10.0/255.0, alpha: 1), UIColor(hue: 0, saturation: 1, brightness: 1, alpha: 0.3)])
+        view.applyGradient(with: [
+            UIColor(hue: 0, saturation: 1, brightness: 1, alpha: 0.3),
+            UIColor(displayP3Red: 100.0/255.0, green: 10.0/255.0, blue: 10.0/255.0, alpha: 1)]
+            ,gradient: GradientOrientation.topLeftBottomRight)
             
         // MARK: Animations
         hero.isEnabled = true
         view.hero.id = "backdrop"
+        profileImage.hero.modifiers = [.translate(x:100)]
+        profileNameLabel.hero.modifiers = [.translate(x:100)]
+        profileClassLabel.hero.modifiers = [.translate(x:100)]
+        profileMajorLabel.hero.modifiers = [.translate(x:100)]
+        profileCollegeLabel.hero.modifiers = [.translate(x:100)]
+        profileNavigator.hero.modifiers = [.translate(x:100)]
         
         setUpConstraints()
     }
@@ -140,6 +159,10 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
             make.top.equalTo(profileNavigatorView)
             make.width.bottom.equalTo(view)
         }
+    }
+    
+    @objc func goBack() {
+        navigationController?.popViewController(animated: true)
     }
     
     //MARK: - Segmented Control

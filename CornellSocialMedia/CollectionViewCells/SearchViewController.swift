@@ -14,6 +14,7 @@ class SearchViewController: UIViewController, UICollectionViewDataSource, UIColl
     var searchPeopleController: UISearchController!
     var peopleCollectionView: UICollectionView!
     var filterButton: UIBarButtonItem!
+    var rightBackButton: UIBarButtonItem!
     
     // Collection View Elements
     let peopleReuseIdentifier = "peopleReuseIdentifier"
@@ -61,16 +62,28 @@ class SearchViewController: UIViewController, UICollectionViewDataSource, UIColl
         filterButton.target = self
         filterButton.tintColor = .white
         filterButton.action = #selector(presentPeopleFilterViewController)
-        navigationItem.rightBarButtonItem = filterButton
+        navigationItem.leftBarButtonItem = filterButton
+        
+        rightBackButton = UIBarButtonItem()
+        rightBackButton.title = "Back>"
+        rightBackButton.target = self
+        rightBackButton.tintColor = .white
+        rightBackButton.action = #selector(goBack)
+        navigationItem.rightBarButtonItem = rightBackButton
+        navigationItem.hidesBackButton = true
         
         //MARK: Background
         view.backgroundColor = .white
-        //navigationController?.navigationBar.barTintColor = UIColor(displayP3Red: 179/255, green: 27/255, blue: 27/255, alpha: 1.0)
         
         // MARK: Animations
         hero.isEnabled = true
         view.hero.id = "backdrop"
-        view.applyGradient(with: [.gray, UIColor(hue: 0, saturation: 1, brightness: 1, alpha: 0.3)])
+        view.applyGradient(with: [
+            .gray,
+            UIColor(hue: 0, saturation: 1, brightness: 1, alpha: 0.6)],
+                           gradient: .topLeftBottomRight)
+        peopleCollectionView.hero.modifiers = [.translate(x:-100)]
+
         
         setUpConstraints()
     }
@@ -82,6 +95,10 @@ class SearchViewController: UIViewController, UICollectionViewDataSource, UIColl
     }
     
     //MARK: - Modal Controller Presenters
+    @objc func goBack() {
+        self.navigationController?.popViewController(animated: true)
+    }
+    
     @objc func presentPeopleFilterViewController(){
         let peopleFilter = PeopleFilterViewController()
         //peopleFilter.peopleFilterDelegate = self
@@ -114,5 +131,4 @@ class SearchViewController: UIViewController, UICollectionViewDataSource, UIColl
     func updateSearchResults(for searchController: UISearchController) {
         //TODO after filters page
     }
-
 }

@@ -77,7 +77,10 @@ class LoginViewController: UIViewController {
         login.setTitleColor(.white, for: .normal)
         login.bounds = CGRect(x: 0, y: 0, width: buttonWidth, height: buttonHeight)
         login.clipsToBounds = true
-        login.applyGradient(with: [.red, UIColor(hue: 0.1, saturation: 1, brightness: 1, alpha: 1)], gradient: .topLeftBottomRight)
+        login.applyGradient(with: [
+            UIColor(displayP3Red: 1, green: 0.5, blue: 0.3, alpha: 1),
+            UIColor(hue: 0, saturation: 1, brightness: 1, alpha: 1)],
+            gradient: .topLeftBottomRight)
         login.layer.cornerRadius = 10
         login.alpha = 0.3
         login.addTarget(self, action: #selector(loginPressed), for: .touchDown)

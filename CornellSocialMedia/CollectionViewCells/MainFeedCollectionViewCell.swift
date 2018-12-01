@@ -12,7 +12,7 @@ import UIKit
 import SnapKit
 
 class MainFeedCollectionViewCell: UICollectionViewCell {
-    
+
     // MARK: - Parameters
     var postType : PostType = .blankPost
 
@@ -70,7 +70,6 @@ class MainFeedCollectionViewCell: UICollectionViewCell {
             postType = .textPost
             configureTextBody(type: .textPost, postText: postText)
         } else if let postText = post.text, let postImage = post.image { // Image Post with Caption
-            print("??")
             postType = .imagePost
 
             configureTextBody(type: .imagePost, postText: postText)
@@ -121,7 +120,6 @@ class MainFeedCollectionViewCell: UICollectionViewCell {
             }
             image?.snp.makeConstraints { (make) in
                 if let text = textBody {
-                    print("?")
                     make.top.equalTo(text.snp.bottom).offset(padding)
                 } else {
                     make.top.equalTo(nametag.snp.bottom).offset(padding)
