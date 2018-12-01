@@ -84,7 +84,12 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
         view.addSubview(profileNavigatorView)
         
         // MARK: Background
-        view.backgroundColor = UIColor(displayP3Red: 100/255, green: 10/255, blue: 10/255, alpha: 1.0)
+        view.backgroundColor = .white
+        view.applyGradient(with: [UIColor(displayP3Red: 100.0/255.0, green: 10.0/255.0, blue: 10.0/255.0, alpha: 1), UIColor(hue: 0, saturation: 1, brightness: 1, alpha: 0.3)])
+            
+        // MARK: Animations
+        hero.isEnabled = true
+        view.hero.id = "backdrop"
         
         setUpConstraints()
     }

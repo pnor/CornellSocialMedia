@@ -64,8 +64,13 @@ class SearchViewController: UIViewController, UICollectionViewDataSource, UIColl
         navigationItem.rightBarButtonItem = filterButton
         
         //MARK: Background
-        view.backgroundColor = .gray
-        navigationController?.navigationBar.barTintColor = UIColor(displayP3Red: 179/255, green: 27/255, blue: 27/255, alpha: 1.0)
+        view.backgroundColor = .white
+        //navigationController?.navigationBar.barTintColor = UIColor(displayP3Red: 179/255, green: 27/255, blue: 27/255, alpha: 1.0)
+        
+        // MARK: Animations
+        hero.isEnabled = true
+        view.hero.id = "backdrop"
+        view.applyGradient(with: [.gray, UIColor(hue: 0, saturation: 1, brightness: 1, alpha: 0.3)])
         
         setUpConstraints()
     }
