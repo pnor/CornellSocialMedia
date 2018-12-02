@@ -38,10 +38,13 @@ class MainFeedCollectionViewCell: UICollectionViewCell {
         // MARK: - Initialize UI Elements
         super.init(frame: frame)
         
+        contentView.backgroundColor = UIColor.clear
+        contentView.layer.masksToBounds = true
+        
         // Second to back view
         containerView = UIView()
         containerView.layer.cornerRadius = 5
-        containerView.backgroundColor = .gray
+        containerView.backgroundColor = .white
         contentView.addSubview(containerView)
         
         profileIcon = UIImageView()
@@ -57,10 +60,6 @@ class MainFeedCollectionViewCell: UICollectionViewCell {
         nametag = UILabel()
         nametag.font = UIFont.systemFont(ofSize: 16, weight: .bold)
         containerView.addSubview(nametag)
-        
-        contentView.applyGradient(with: [UIColor(hue: 0, saturation: 0.1, brightness: 1, alpha: 1), UIColor(hue: 0, saturation: 0, brightness: 1, alpha: 1)], gradient: .topLeftBottomRight)
-        contentView.layer.masksToBounds = true
-        contentView.layer.cornerRadius = 5
         
         updateConstraints()
     }
@@ -95,9 +94,7 @@ class MainFeedCollectionViewCell: UICollectionViewCell {
     
     override func updateConstraints() {
         super.updateConstraints()
-//        contentView.snp.makeConstraints { (make) in
-//            make.width.equalTo(UIScreen.main.bounds.width - CGFloat(padding * 2))
-//        }
+
         containerView.snp.makeConstraints { (make) in
             make.edges.equalToSuperview()
             make.width.equalTo(UIScreen.main.bounds.width - CGFloat(padding * 2))
@@ -123,8 +120,8 @@ class MainFeedCollectionViewCell: UICollectionViewCell {
         } else if postType == .imagePost || postType == .imagePostNoCaption { // image posts
             textBody?.snp.makeConstraints { (make) in
                 make.top.equalTo(nametag.snp.bottom).offset(imageSmallPadding * 2)
-                make.leading.equalToSuperview().offset(imagePadding)
-                make.trailing.equalToSuperview().offset(-imagePadding)
+                make.leading.equalToSuperview().offset(padding)
+                make.trailing.equalToSuperview().offset(-padding)
             }
             image?.snp.makeConstraints { (make) in
                 if let text = textBody {

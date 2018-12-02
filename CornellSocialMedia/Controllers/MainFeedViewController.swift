@@ -206,12 +206,6 @@ class MainFeedViewController: UIViewController, UICollectionViewDelegate, UIColl
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if let post = posts?[indexPath.row] {
             return sizeForPost(post: post)
-            
-//            if post.image == nil {
-//                return CGSize(width: messagesLayout.estimatedItemSize.width, height: sizeForPost(post: posts![indexPath.row]).height)
-//            } else {
-//                return messagesLayout.estimatedItemSize
-//            }
         }
         fatalError("no post for this position!")
     }
@@ -220,8 +214,13 @@ class MainFeedViewController: UIViewController, UICollectionViewDelegate, UIColl
     //MARK: - Display Utility Methods
     func sizeForPost(post: Post) -> CGSize {
         let width = UIScreen.main.bounds.width - CGFloat(padding * 2)
-        let textHeight = post.text == nil ? 0 : post.text!.height(withConstrainedWidth: width, font: UIFont.systemFont(ofSize: 17))
+        
+        let textWidth = width - CGFloat(padding * 2)
+        
+         let textHeight = post.text == nil ? 0 : post.text!.height(withConstrainedWidth: textWidth, font: UIFont.systemFont(ofSize: 17))
+    
         let height : CGFloat = MainFeedCollectionViewCell.headerHeight(post: post) + textHeight + MainFeedCollectionViewCell.footerHeight(post: post)
+        
         return CGSize(width: width, height: height)
     }
 }
