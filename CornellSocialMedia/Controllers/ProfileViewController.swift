@@ -8,12 +8,12 @@
 
 import UIKit
 
-class ProfileViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout  {
-
+class ProfileViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIImagePickerControllerDelegate, UINavigationControllerDelegate  {
+    
     // MARK: - Parameters
     // UI Elements
     var profileNameLabel: UILabel!
-    var profileImage: UIImageView!
+    var profileImage: UIButton!
     var profileClassLabel: UILabel!
     var profileCollegeLabel: UILabel!
     var profileMajorLabel: UILabel!
@@ -22,6 +22,10 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
     
     //Collection View Elements
     let peopleViewReuseIdentifier = "peopleViewReuseIdentifier"
+    
+    //Photo Elements
+    var imagePicker: UIImagePickerController!
+    var imageAlert: UIAlertController!
     
     
     override func viewDidLoad() {
@@ -36,12 +40,14 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
         profileNameLabel.textColor = .white
         view.addSubview(profileNameLabel)
         
-        profileImage = UIImageView(image: UIImage(named: "cornell2"))
-        profileImage.contentMode = .scaleAspectFill
+        profileImage = UIButton()
+        profileImage.setImage(UIImage(named: "cornell2"), for: .normal)
+        profileImage.imageView?.contentMode = .scaleAspectFill
         profileImage.layer.borderWidth = 1
         profileImage.layer.borderColor = UIColor.white.cgColor
         profileImage.layer.cornerRadius = 50
         profileImage.clipsToBounds = true
+        profileImage.addTarget(self, action: #selector(choosePhotoMode), for: .touchUpInside)
         view.addSubview(profileImage)
         
         profileClassLabel = UILabel()
@@ -83,8 +89,35 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
         profileNavigatorView.register(PeopleCollectionViewCell.self, forCellWithReuseIdentifier: peopleViewReuseIdentifier)
         view.addSubview(profileNavigatorView)
         
+        imagePicker = UIImagePickerController()
+        imagePicker.delegate = self
+        imagePicker.allowsEditing = true
+        
+        imageAlert = UIAlertController(title: "Choose Option",
+                                       message: "Choose to take a photo or select one from your library",
+                                       preferredStyle: .alert)
+        imageAlert.addAction(UIAlertAction(title: "Camera",
+                                           style: .default,
+                                           handler: { (alert) in
+                                            self.imagePicker.sourceType = UIImagePickerController.SourceType.camera;
+                                            self.presentChoice();
+        }))
+        imageAlert.addAction(UIAlertAction(title: "Library",
+                                           style: .default,
+                                           handler: { (alert) in
+                                            self.imagePicker.sourceType = UIImagePickerController.SourceType.photoLibrary;
+                                            self.presentChoice();
+        }))
+        
+        
+        
         // MARK: Background
         view.backgroundColor = UIColor(displayP3Red: 100/255, green: 10/255, blue: 10/255, alpha: 1.0)
+        
+        // MARK: NavigationBar
+        let navigationBar = self.navigationController?.navigationBar
+        navigationBar!.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
+        navigationBar!.shadowImage = UIImage()
         
         setUpConstraints()
     }
@@ -92,42 +125,38 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
     func setUpConstraints(){
         
         profileNameLabel.snp.makeConstraints { (make) in
-            make.top.equalTo(view).offset(75)
-            make.left.equalTo(view).offset(25)
-            make.width.equalTo(375)
+            make.top.equalTo(view).offset(60)
+            make.centerX.equalTo(view)
             make.height.equalTo(24)
         }
         
         profileImage.snp.makeConstraints { (make) in
-            make.top.equalTo(profileNameLabel).offset(50)
-            make.left.equalTo(view).offset(25)
+            make.top.equalTo(profileNameLabel).offset(25)
+            make.centerX.equalTo(profileNameLabel)
             make.height.width.equalTo(100)
         }
         
         profileClassLabel.snp.makeConstraints { (make) in
-            make.top.equalTo(profileImage)
-            make.left.equalTo(profileNameLabel).offset(120)
-            make.width.equalTo(300)
+            make.top.equalTo(profileImage).offset(100)
+            make.centerX.equalTo(profileNameLabel)
             make.height.equalTo(20)
         }
         
         profileCollegeLabel.snp.makeConstraints { (make) in
-            make.top.equalTo(profileClassLabel).offset(40)
-            make.left.equalTo(profileClassLabel)
-            make.width.equalTo(300)
+            make.top.equalTo(profileClassLabel).offset(20)
+            make.centerX.equalTo(profileNameLabel)
             make.height.equalTo(20)
         }
         
         profileMajorLabel.snp.makeConstraints { (make) in
-            make.top.equalTo(profileCollegeLabel).offset(40)
-            make.left.equalTo(profileCollegeLabel)
-            make.width.equalTo(300)
+            make.top.equalTo(profileCollegeLabel).offset(20)
+            make.centerX.equalTo(profileNameLabel)
             make.height.equalTo(20)
         }
         
         profileNavigator.snp.makeConstraints { (make) in
             make.left.right.equalTo(view)
-            make.top.equalTo(profileMajorLabel).offset(50)
+            make.top.equalTo(profileMajorLabel).offset(30)
             make.height.equalTo(25)
         }
         
@@ -165,5 +194,38 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
         //todo
         return UICollectionViewCell()
     }
-
+    
+    //MARK: - Photo Functionability
+    
+    @objc func choosePhotoMode(){
+        present(imageAlert, animated: true, completion: nil)
+    }
+    
+    func presentChoice(){
+        switch(imagePicker.sourceType){
+        case UIImagePickerController.SourceType.camera:
+            if UIImagePickerController.isSourceTypeAvailable(.camera){
+                present(imagePicker, animated: true, completion: nil)
+            }
+            break
+        case UIImagePickerController.SourceType.photoLibrary:
+            if UIImagePickerController.isSourceTypeAvailable(.photoLibrary){
+                present(imagePicker, animated: true, completion: nil)
+            }
+            break
+        default:
+            print("Something went wrong with choosePhotoMode")
+        }
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        let imagePicked = info[UIImagePickerController.InfoKey.originalImage] as! UIImage
+        profileImage.setImage(imagePicked, for: .normal)
+        dismiss(animated: true, completion: nil)
+    }
+    
 }
