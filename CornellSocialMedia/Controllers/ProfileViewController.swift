@@ -27,6 +27,10 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
     var imagePicker: UIImagePickerController!
     var imageAlert: UIAlertController!
     
+    //Profile Functionality Buttons
+    var editOrFollowButton: UIButton!
+    var logoutBarButton: UIBarButtonItem!
+    
     override func viewWillAppear(_ animated: Bool) {
         let navigationBar = self.navigationController?.navigationBar
         navigationBar!.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
@@ -119,7 +123,22 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
                                             self.presentChoice();
         }))
         
+        editOrFollowButton = UIButton()
+        editOrFollowButton.setTitle("Edit Profile", for: .normal) //placeholder; button functionality and title determined whether current logged ID matches the profile ID
+        editOrFollowButton.setTitleColor(.white, for: .normal)
+        editOrFollowButton.addTarget(self, action: #selector(editProfile), for: .touchUpInside)
+        editOrFollowButton.titleLabel?.textAlignment = .center
+        editOrFollowButton.backgroundColor = .clear
+        editOrFollowButton.layer.cornerRadius = 5
+        editOrFollowButton.layer.borderWidth = 1
+        editOrFollowButton.layer.borderColor = UIColor.white.cgColor
+        view.addSubview(editOrFollowButton)
         
+        logoutBarButton = UIBarButtonItem()
+        navigationItem.rightBarButtonItem = logoutBarButton
+        logoutBarButton.title = "Logout"
+        logoutBarButton.target = self
+        logoutBarButton.action = #selector(logout)
         
         // MARK: Background
         view.backgroundColor = UIColor(displayP3Red: 100/255, green: 10/255, blue: 10/255, alpha: 1.0)
@@ -159,9 +178,16 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
             make.height.equalTo(20)
         }
         
+        editOrFollowButton.snp.makeConstraints { (make) in
+            make.top.equalTo(profileMajorLabel).offset(25)
+            make.centerX.equalTo(view)
+            make.width.equalTo(125)
+            make.height.equalTo(25)
+        }
+        
         profileNavigator.snp.makeConstraints { (make) in
             make.left.right.equalTo(view)
-            make.top.equalTo(profileMajorLabel).offset(30)
+            make.top.equalTo(editOrFollowButton).offset(40)
             make.height.equalTo(25)
         }
         
@@ -231,6 +257,15 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
         let imagePicked = info[UIImagePickerController.InfoKey.originalImage] as! UIImage
         profileImage.setImage(imagePicked, for: .normal)
         dismiss(animated: true, completion: nil)
+    }
+    
+    //MARK: - Button Functions
+    @objc func editProfile(){
+        //present a FirstLoginViewController with information already inputted
+    }
+    
+    @objc func logout(){
+        
     }
     
 }
