@@ -9,10 +9,16 @@
 import Foundation
 import UIKit
 
-///Eventually for Alisa to fill in
-//struct People: Codable {
-//
-//}
+struct Peoples: Codable {
+    let netid: String
+    let display_name: String
+    let image: String // url
+    let year: Int
+    let college: String
+    let major: String
+    let followers: String //netids delimited by commas
+    let following: String
+}
 
 //hardcode
 class People{

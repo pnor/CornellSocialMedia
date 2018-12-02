@@ -185,10 +185,8 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
 
     func setUpConstraints(){
 
-        profileNameLabel.snp.makeConstraints { (make) in            make.top.equalTo(view.safeAreaLayoutGuide).offset(25)
-            make.left.equalTo(view).offset(25)
+        profileNameLabel.snp.makeConstraints { (make) in            make.top.equalTo(view.safeAreaLayoutGuide)
             make.centerX.equalTo(view)
-            make.width.equalTo(375)
             make.height.equalTo(24)
         }
 

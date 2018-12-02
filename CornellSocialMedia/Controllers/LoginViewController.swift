@@ -47,30 +47,30 @@ class LoginViewController: UIViewController {
         loginTitle.alpha = 0
         view.addSubview(loginTitle)
 
-        username = IsaoTextField()
-        username.placeholder = "Username"
-        username.textColor = .white
-        username.activeColor = .red
-        username.inactiveColor = .white
-        username.tintColor = .clear
-        username.autocorrectionType = .no
-        username.autocapitalizationType = .none
-        username.font = UIFont.systemFont(ofSize: 20)
-        username.alpha = 0.1
-        view.addSubview(username)
-
-        password = IsaoTextField()
-        password.placeholder = "Password"
-        password.textColor = .white
-        password.activeColor = .red
-        password.inactiveColor = .white
-        password.tintColor = .clear
-        password.autocorrectionType = .no
-        password.autocapitalizationType = .none
-        password.font = UIFont.systemFont(ofSize: 20)
-        password.isSecureTextEntry = true
-        password.alpha = 0.2
-        view.addSubview(password)
+//        username = IsaoTextField()
+//        username.placeholder = "Username"
+//        username.textColor = .white
+//        username.activeColor = .red
+//        username.inactiveColor = .white
+//        username.tintColor = .clear
+//        username.autocorrectionType = .no
+//        username.autocapitalizationType = .none
+//        username.font = UIFont.systemFont(ofSize: 20)
+//        username.alpha = 0.1
+//        view.addSubview(username)
+//
+//        password = IsaoTextField()
+//        password.placeholder = "Password"
+//        password.textColor = .white
+//        password.activeColor = .red
+//        password.inactiveColor = .white
+//        password.tintColor = .clear
+//        password.autocorrectionType = .no
+//        password.autocapitalizationType = .none
+//        password.font = UIFont.systemFont(ofSize: 20)
+//        password.isSecureTextEntry = true
+//        password.alpha = 0.2
+//        view.addSubview(password)
 
         login = UIButton()
         login.setTitle("Log in", for: .normal)
@@ -99,8 +99,8 @@ class LoginViewController: UIViewController {
         // MARK: Animations
         UIView.animate(withDuration: 1) {
             self.loginTitle.alpha = 1
-            self.username.alpha = 1
-            self.password.alpha = 1
+//            self.username.alpha = 1
+//            self.password.alpha = 1
             self.login.alpha = 1
         }
 
@@ -116,10 +116,9 @@ class LoginViewController: UIViewController {
         // TODO: implement proper login
         // validate username + passqord
         // if all good go to main screen:
-
+        
         //present(alert, animated: true, completion: nil)
         login.setTitleColor(.clear, for: .normal)
-        //self.navigationController?.present(MainFeedViewController(), animated: true, completion: nil)
         self.navigationController?.pushViewController(MainFeedViewController(), animated: true)
     }
 
@@ -148,20 +147,20 @@ class LoginViewController: UIViewController {
             make.centerY.equalTo(view).offset(-titlePadding)
         }
 
-        username.snp.makeConstraints { (make) -> Void in
-            make.centerY.equalTo(view).offset(padding)
-            make.centerX.equalTo(view)
-            make.width.equalTo(textFieldWidth)
-        }
-
-        password.snp.makeConstraints { (make) -> Void in
-            make.top.equalTo(username.snp_bottomMargin).offset(padding)
-            make.centerX.equalTo(view)
-            make.width.equalTo(textFieldWidth)
-        }
+//        username.snp.makeConstraints { (make) -> Void in
+//            make.centerY.equalTo(view).offset(padding)
+//            make.centerX.equalTo(view)
+//            make.width.equalTo(textFieldWidth)
+//        }
+//
+//        password.snp.makeConstraints { (make) -> Void in
+//            make.top.equalTo(username.snp_bottomMargin).offset(padding)
+//            make.centerX.equalTo(view)
+//            make.width.equalTo(textFieldWidth)
+//        }
 
         login.snp.makeConstraints { (make)  -> Void in
-            make.top.equalTo(password.snp_bottomMargin).offset(padding)
+            make.top.equalTo(loginTitle.snp_bottomMargin).offset(padding+50)
             make.centerX.equalTo(view)
             make.width.equalTo(buttonWidth)
             make.height.equalTo(buttonHeight)

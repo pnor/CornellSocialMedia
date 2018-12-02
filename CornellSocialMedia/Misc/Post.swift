@@ -10,6 +10,12 @@
 
 import UIKit
 
+struct Posts: Codable{
+    let netid: String
+    let text: String
+    let image: String //url
+}
+
 class Post : CustomStringConvertible {
     let name : String!
     let profileImage : UIImage!
