@@ -12,7 +12,7 @@ import SnapKit
 import TextFieldEffects
 
 class LoginViewController: UIViewController {
-    
+
     // MARK: - Parameters
     // UI Elements
     var backgroundImage : UIImageView!
@@ -20,20 +20,20 @@ class LoginViewController: UIViewController {
     var username : IsaoTextField!
     var password : IsaoTextField!
     var login : UIButton!
-    
+
     // Log In Error Message
     var alert : UIAlertController!
-    
+
     // Padding
     let titlePadding = 130
     let padding = 60
     let textFieldWidth = 180
     let buttonWidth = 140
     let buttonHeight = 30
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         // MARK: - UI Elements
         backgroundImage = UIImageView(image: getABackgroundImage())
         backgroundImage.contentMode = .scaleToFill
@@ -46,7 +46,7 @@ class LoginViewController: UIViewController {
         loginTitle.textColor = .white
         loginTitle.alpha = 0
         view.addSubview(loginTitle)
-        
+
         username = IsaoTextField()
         username.placeholder = "Username"
         username.textColor = .white
@@ -58,7 +58,7 @@ class LoginViewController: UIViewController {
         username.font = UIFont.systemFont(ofSize: 20)
         username.alpha = 0.1
         view.addSubview(username)
-        
+
         password = IsaoTextField()
         password.placeholder = "Password"
         password.textColor = .white
@@ -71,7 +71,7 @@ class LoginViewController: UIViewController {
         password.isSecureTextEntry = true
         password.alpha = 0.2
         view.addSubview(password)
-        
+
         login = UIButton()
         login.setTitle("Log in", for: .normal)
         login.setTitleColor(.white, for: .normal)
@@ -85,17 +85,17 @@ class LoginViewController: UIViewController {
         login.alpha = 0.3
         login.addTarget(self, action: #selector(loginPressed), for: .touchDown)
         view.addSubview(login)
-        
+
         // MARK: Background
         view.backgroundColor = .darkGray
         navigationController?.setNavigationBarHidden(true, animated: true)
-        
+
         // MARK: Error Prompt
 //        alert = UIAlertController(title: "Error", message: "Could not log in with provided information", preferredStyle: .alert)
 //        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (alertAction) in
 //            self.alert.dismiss(animated: true, completion: nil)
 //        }))
-        
+
         // MARK: Animations
         UIView.animate(withDuration: 1) {
             self.loginTitle.alpha = 1
@@ -103,27 +103,27 @@ class LoginViewController: UIViewController {
             self.password.alpha = 1
             self.login.alpha = 1
         }
-        
+
         login.hero.id = "backdrop"
         navigationController?.hero.isEnabled = true
-        
+
         setNeedsStatusBarAppearanceUpdate()
         setUpConstraints()
     }
-    
+
     // MARK: - Button and Error Prompt
     @objc func loginPressed() {
         // TODO: implement proper login
         // validate username + passqord
         // if all good go to main screen:
-        
+
         //present(alert, animated: true, completion: nil)
         login.setTitleColor(.clear, for: .normal)
         //self.navigationController?.present(MainFeedViewController(), animated: true, completion: nil)
         self.navigationController?.pushViewController(MainFeedViewController(), animated: true)
     }
-    
-    
+
+
     // MARK: - Functions for UI and Positioning
     /**
      Gets a random image from the assets name "cornell#" where # is an integer
@@ -137,29 +137,29 @@ class LoginViewController: UIViewController {
             fatalError("Tried to display a background image at \(randomInt); does cornell\(randomInt) exist in assets?")
         }
     }
-    
+
     func setUpConstraints() {
         backgroundImage.snp.makeConstraints { (make) -> Void in
             make.edges.equalTo(view)
         }
-        
+
         loginTitle.snp.makeConstraints { (make) -> Void in
             make.centerX.equalTo(view)
             make.centerY.equalTo(view).offset(-titlePadding)
         }
-        
+
         username.snp.makeConstraints { (make) -> Void in
             make.centerY.equalTo(view).offset(padding)
             make.centerX.equalTo(view)
             make.width.equalTo(textFieldWidth)
         }
-        
+
         password.snp.makeConstraints { (make) -> Void in
             make.top.equalTo(username.snp_bottomMargin).offset(padding)
             make.centerX.equalTo(view)
             make.width.equalTo(textFieldWidth)
         }
-        
+
         login.snp.makeConstraints { (make)  -> Void in
             make.top.equalTo(password.snp_bottomMargin).offset(padding)
             make.centerX.equalTo(view)
@@ -168,4 +168,3 @@ class LoginViewController: UIViewController {
         }
     }
 }
-
