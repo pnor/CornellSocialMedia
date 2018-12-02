@@ -13,25 +13,33 @@ class SearchViewController: UIViewController, UICollectionViewDataSource, UIColl
     //MARK: - UI Elements
     var searchPeopleController: UISearchController!
     var peopleCollectionView: UICollectionView!
-    var filterButton: UIBarButtonItem!
     
     // Collection View Elements
     let peopleReuseIdentifier = "peopleReuseIdentifier"
     
     //MARK: - People Information
     var people: [People] = []
+    var peoplePlaceHolder: [People] = []
     
     let person1 = People(name: "Gonzalo Gonzalez", photo: UIImage(named: "cornell1")!, classOf: 2022, college: "College of Engineering", major: "Computer Science")
     let person2 = People(name: "Phillip O' Reggio", photo: UIImage(named: "cornell2")!, classOf: 2023, college: "College of Engineering", major: "iOS")
     let person3 = People(name: "Alisa Lai", photo: UIImage(named: "cornell1")!, classOf: 3022, college: "College of Engineering", major: "Backend")
     let person4 = People(name: "Vivian Cheng", photo: UIImage(named: "cornell2")!, classOf: 3023, college: "College of Engineering", major: "Design")
     
+    override func viewWillAppear(_ animated: Bool) {
+        navigationController?.navigationBar.barTintColor = UIColor(displayP3Red: 179/255, green: 27/255, blue: 27/255, alpha: 1.0)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        let navigationBar = navigationController?.navigationBar
+        navigationBar!.barTintColor = .white
+        navigationBar!.isTranslucent = true
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        people = [person1, person2, person3, person4, person3, person1, person4, person2, person3, person1, person4, person2]
-        
-        //people = [person1, person2]
+        peoplePlaceHolder = [person1, person2, person3, person4]
         
         //MARK: - UI Elements
         searchPeopleController = UISearchController(searchResultsController: nil)
@@ -56,16 +64,8 @@ class SearchViewController: UIViewController, UICollectionViewDataSource, UIColl
         peopleCollectionView.register(PeopleCollectionViewCell.self, forCellWithReuseIdentifier: peopleReuseIdentifier)
         view.addSubview(peopleCollectionView)
         
-        filterButton = UIBarButtonItem()
-        filterButton.title = "Filter"
-        filterButton.target = self
-        filterButton.tintColor = .white
-        filterButton.action = #selector(presentPeopleFilterViewController)
-        navigationItem.rightBarButtonItem = filterButton
-        
         //MARK: Background
         view.backgroundColor = .gray
-        navigationController?.navigationBar.barTintColor = UIColor(displayP3Red: 179/255, green: 27/255, blue: 27/255, alpha: 1.0)
         
         setUpConstraints()
     }
@@ -74,15 +74,6 @@ class SearchViewController: UIViewController, UICollectionViewDataSource, UIColl
         peopleCollectionView.snp.makeConstraints { (make) in
             make.top.left.right.bottom.equalTo(view)
         }
-    }
-    
-    //MARK: - Modal Controller Presenters
-    @objc func presentPeopleFilterViewController(){
-        let peopleFilter = PeopleFilterViewController()
-        //peopleFilter.peopleFilterDelegate = self
-        //filters chosen should go in an array of filters that then filters the people in a database accordingly
-        //filters should save while still in search but clears when you go back to message board~
-        present(peopleFilter, animated: true, completion: nil)
     }
 
     //MARK: - Collection View
@@ -107,7 +98,33 @@ class SearchViewController: UIViewController, UICollectionViewDataSource, UIColl
     
     //MARK: - Search Controller
     func updateSearchResults(for searchController: UISearchController) {
-        //TODO after filters page
+        if let searchText = searchPeopleController.searchBar.text {
+            if !searchText.isEmpty {
+                for person in peoplePlaceHolder{
+                    let hasPerson = people.contains { (peoplePerson) -> Bool in
+                        if person.name == peoplePerson.name{
+                            return true
+                        }
+                        return false
+                    }
+                    if (hasPerson){
+                        if person.name.lowercased().range(of: searchText.lowercased()) == nil{
+                            people = people.filter({ (peoplePerson) -> Bool in
+                                return person.name != peoplePerson.name
+                            })
+                        }
+                    } else {
+                        if person.name.lowercased().range(of: searchText.lowercased()) != nil{
+                            people.append(person)
+                        }
+                    }
+                }
+                peopleCollectionView.reloadData()
+            } else {
+                self.people = []
+                peopleCollectionView.reloadData()
+            }
+        }
     }
 
 }
