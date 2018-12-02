@@ -14,6 +14,7 @@ import SnapKit
 class MainFeedCollectionViewCell: UICollectionViewCell {
 
     // MARK: - Parameters
+    var containerView : UIView!
     var postType : PostType = .blankPost
 
     // UI Elements
@@ -22,11 +23,9 @@ class MainFeedCollectionViewCell: UICollectionViewCell {
     var textBody : UILabel?
     var image : UIImageView?
     
-    // Self Sizing
-    public var isHeightCalculated = false
     // Position and Size Constants
-    public var maxLinesOfTextPost = 1
-    public var maxLinesOfCaption = 1
+    public var maxLinesOfTextPost = 0
+    public var maxLinesOfCaption = 0
     // All Text Post
     let iconSize = 40
     let padding = 20
@@ -39,6 +38,12 @@ class MainFeedCollectionViewCell: UICollectionViewCell {
         // MARK: - Initialize UI Elements
         super.init(frame: frame)
         
+        // Second to back view
+        containerView = UIView()
+        containerView.layer.cornerRadius = 5
+        containerView.backgroundColor = .gray
+        contentView.addSubview(containerView)
+        
         profileIcon = UIImageView()
         profileIcon.image = UIImage(named: "cornellC")
         profileIcon.bounds = CGRect(x: 0, y: 0, width: iconSize, height: iconSize)
@@ -47,11 +52,11 @@ class MainFeedCollectionViewCell: UICollectionViewCell {
         profileIcon.clipsToBounds = true
         profileIcon.contentMode = .scaleAspectFit
         profileIcon.backgroundColor = .black
-        contentView.addSubview(profileIcon)
+        containerView.addSubview(profileIcon)
         
         nametag = UILabel()
         nametag.font = UIFont.systemFont(ofSize: 16, weight: .bold)
-        contentView.addSubview(nametag)
+        containerView.addSubview(nametag)
         
         contentView.applyGradient(with: [UIColor(hue: 0, saturation: 0.1, brightness: 1, alpha: 1), UIColor(hue: 0, saturation: 0, brightness: 1, alpha: 1)], gradient: .topLeftBottomRight)
         contentView.layer.masksToBounds = true
@@ -90,7 +95,11 @@ class MainFeedCollectionViewCell: UICollectionViewCell {
     
     override func updateConstraints() {
         super.updateConstraints()
-        contentView.snp.makeConstraints { (make) in
+//        contentView.snp.makeConstraints { (make) in
+//            make.width.equalTo(UIScreen.main.bounds.width - CGFloat(padding * 2))
+//        }
+        containerView.snp.makeConstraints { (make) in
+            make.edges.equalToSuperview()
             make.width.equalTo(UIScreen.main.bounds.width - CGFloat(padding * 2))
         }
         
@@ -108,8 +117,7 @@ class MainFeedCollectionViewCell: UICollectionViewCell {
         if postType == .textPost { // text posts
             textBody?.snp.makeConstraints { (make) in
                 make.top.equalTo(profileIcon).offset(3 * padding)
-                make.leading.equalToSuperview().offset(padding)
-                make.trailing.equalToSuperview().offset(-padding)
+                make.leading.trailing.equalToSuperview().inset(padding)
                 make.bottom.equalToSuperview().offset(-padding)
             }
         } else if postType == .imagePost || postType == .imagePostNoCaption { // image posts
@@ -127,7 +135,7 @@ class MainFeedCollectionViewCell: UICollectionViewCell {
                 make.leading.equalToSuperview().offset(imagePadding)
                 make.trailing.equalToSuperview().offset(-imagePadding)
                 make.height.equalTo(imageHeight)
-                make.bottom.equalToSuperview().offset(-imageSmallPadding)
+                make.bottom.equalToSuperview().offset(-imagePadding)
             }
         } else { // blank posts
             contentView.snp.makeConstraints { (make) in
@@ -143,16 +151,18 @@ class MainFeedCollectionViewCell: UICollectionViewCell {
             if let textBodyLabel = textBody {
                 textBodyLabel.text = postText
                 textBodyLabel.numberOfLines = maxLinesOfTextPost
-                textBodyLabel.sizeToFit()
-                contentView.addSubview(textBodyLabel)
+                textBodyLabel.font = UIFont.systemFont(ofSize: 17)
+                //textBodyLabel.sizeToFit()
+                containerView.addSubview(textBodyLabel)
             }
         case .imagePost:
             textBody = UILabel()
             if let textBodyLabel = textBody {
                 textBodyLabel.text = postText
                 textBodyLabel.numberOfLines = maxLinesOfCaption
-                textBodyLabel.sizeToFit()
-                contentView.addSubview(textBodyLabel)
+                textBodyLabel.font = UIFont.systemFont(ofSize: 17)
+                //textBodyLabel.sizeToFit()
+                containerView.addSubview(textBodyLabel)
             }
         default:
             return
@@ -171,7 +181,7 @@ class MainFeedCollectionViewCell: UICollectionViewCell {
             image?.backgroundColor = .black
             if let postMainImage = image {
                 postMainImage.image = mainImage
-                contentView.addSubview(postMainImage)
+                containerView.addSubview(postMainImage)
             }
         case .imagePostNoCaption:
             image = UIImageView()
@@ -183,7 +193,7 @@ class MainFeedCollectionViewCell: UICollectionViewCell {
             image?.backgroundColor = .black
             if let postMainImage = image {
                 postMainImage.image = mainImage
-                contentView.addSubview(postMainImage)
+                containerView.addSubview(postMainImage)
             }
         default:
             return
@@ -199,17 +209,65 @@ class MainFeedCollectionViewCell: UICollectionViewCell {
         textBody = nil
     }
     
-    override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
-        if !isHeightCalculated {
-            setNeedsLayout()
-            layoutIfNeeded()
-            let size = contentView.systemLayoutSizeFitting(layoutAttributes.size)
-            var newFrame = layoutAttributes.frame
-            newFrame.size.width = CGFloat(ceilf(Float(size.width)))
-            layoutAttributes.frame = newFrame
-            isHeightCalculated = true
+    // MARK: - Header and Footer Calculators
+    /// Everything from the top to the text/image
+    static func headerHeight(post: Post) -> CGFloat {
+        // From Parameters
+        // All Text Post
+        let iconSize = 40
+        let padding = 20
+        // With Image
+        let imagePadding = 30
+        let imageSmallPadding = 10
+        let imageHeight = 200
+        
+        
+        switch getPostType(from: post) {
+        case .textPost:
+        return CGFloat(padding + iconSize + (3 * padding))
+        case .imagePost:
+        return CGFloat(padding + iconSize + (2 * imageSmallPadding))
+        case .imagePostNoCaption:
+        return CGFloat(padding + iconSize + padding)
+        case .blankPost:
+        return CGFloat(2 * padding + iconSize)
         }
-        return layoutAttributes
+    }
+    
+    static func footerHeight(post: Post) -> CGFloat  { /// Everything below the text
+        // From Parameters...
+        // All Text Post
+        let iconSize = 40
+        let padding = 20
+        // With Image
+        let imagePadding = 30
+        let imageSmallPadding = 10
+        let imageHeight = 200
+        
+        
+        switch getPostType(from: post) {
+        case .textPost:
+            return CGFloat(padding)
+        case .imagePost:
+            return CGFloat(padding + imageHeight + imagePadding)
+        case .imagePostNoCaption:
+            return CGFloat(imageHeight + imagePadding)
+        case .blankPost:
+            return CGFloat(0)
+        }
+    }
+    
+    // MARK: - Helper Methods
+    static func getPostType(from post: Post) -> PostType {
+        if post.text == nil && post.image == nil {
+            return PostType.blankPost
+        }
+        
+        if post.image == nil {
+            return PostType.textPost
+        } else {
+            return post.text == nil ? PostType.imagePostNoCaption : PostType.imagePost
+        }
     }
 }
 

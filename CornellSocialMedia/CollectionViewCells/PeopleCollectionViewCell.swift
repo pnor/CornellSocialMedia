@@ -57,14 +57,14 @@ class PeopleCollectionViewCell: UICollectionViewCell {
     override func updateConstraints() {
         
         peopleNameLabel.snp.makeConstraints { (make) in
-            make.top.equalTo(contentView)
+            make.top.equalTo(contentView).offset(20)
             make.left.equalTo(contentView).offset(25)
             make.width.equalTo(375)
             make.height.equalTo(24)
         }
         
         peopleImage.snp.makeConstraints { (make) in
-            make.top.equalTo(peopleNameLabel).offset(50)
+            make.top.equalTo(peopleNameLabel).offset(30)
             make.left.equalTo(contentView).offset(25)
             make.height.width.equalTo(100)
         }

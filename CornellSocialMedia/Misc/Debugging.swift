@@ -23,13 +23,20 @@ class Debugging {
         let imagePostWithCaption = Post(name: "Image Kid that Speaks", profileImage: UIImage(named: "cornellC")!, body: "Hi guys check out my cool picture; cool right?", image: UIImage(named: "cornell2")!)
         let blankPost = Post(name: "hacker", profileImage: UIImage(named: "cornellC")!)
         
-//        return [shortPost, shortPost.copy(), shortPost.copy(), blankPost.copy(), imagePostWithCaption.copy(), imagePostWithCaption.copy(), imagePostWithCaption.copy(), blankPost]
         return [
-            shortPost, mediumPost, longLargePost, imagePost, imagePostWithCaption, blankPost,
-            mediumPost.copy(), imagePost.copy(), longLargePost.copy(), imagePostWithCaption.copy(),
-            blankPost.copy(), shortPost.copy(), shortPost.copy(), longLargePost.copy(),
-            imagePostWithCaption.copy(), imagePost.copy()
+            shortPost, shortPost.copy(), shortPost.copy(),
+            mediumPost, mediumPost.copy(), mediumPost.copy(),
+            longLargePost, longLargePost.copy(), longLargePost.copy(),
+            imagePost, imagePost.copy(), imagePost.copy(),
+            imagePostWithCaption, imagePostWithCaption.copy(), imagePostWithCaption.copy(),
+            blankPost, blankPost.copy(), blankPost.copy()
         ]
+//        return [
+//            shortPost, mediumPost, longLargePost, imagePost, imagePostWithCaption, blankPost,
+//            mediumPost.copy(), imagePost.copy(), longLargePost.copy(), imagePostWithCaption.copy(),
+//            blankPost.copy(), shortPost.copy(), shortPost.copy(), longLargePost.copy(),
+//            imagePostWithCaption.copy(), imagePost.copy()
+//        ]
     }
     
     /// returns a random post
