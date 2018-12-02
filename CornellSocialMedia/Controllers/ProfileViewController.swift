@@ -8,12 +8,12 @@
 
 import UIKit
 
-class ProfileViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIImagePickerControllerDelegate, UINavigationControllerDelegate  {
+class ProfileViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout{
 
     // MARK: - Parameters
     // UI Elements
     var profileNameLabel: UILabel!
-    var profileImage: UIButton!
+    var profileImage: UIImageView!
     var profileClassLabel: UILabel!
     var profileCollegeLabel: UILabel!
     var profileMajorLabel: UILabel!
@@ -62,14 +62,13 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
         profileNameLabel.textColor = .white
         view.addSubview(profileNameLabel)
 
-        profileImage = UIButton()
-        profileImage.setImage(UIImage(named: "cornell2"), for: .normal)
-        profileImage.imageView?.contentMode = .scaleAspectFill
+        profileImage = UIImageView()
+        profileImage.image = UIImage(named: "cornell2")
+        profileImage.contentMode = .scaleAspectFill
         profileImage.layer.borderWidth = 1
         profileImage.layer.borderColor = UIColor.white.cgColor
         profileImage.layer.cornerRadius = 50
         profileImage.clipsToBounds = true
-        profileImage.addTarget(self, action: #selector(choosePhotoMode), for: .touchUpInside)
         view.addSubview(profileImage)
 
         profileClassLabel = UILabel()
@@ -124,27 +123,6 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
         swipeRight.direction = .right
         view.addGestureRecognizer(swipeRight)
 
-        // Images
-        imagePicker = UIImagePickerController()
-        imagePicker.delegate = self
-        imagePicker.allowsEditing = true
-
-        imageAlert = UIAlertController(title: "Choose Option",
-                                       message: "Choose to take a photo or select one from your library",
-                                       preferredStyle: .alert)
-        imageAlert.addAction(UIAlertAction(title: "Camera",
-                                           style: .default,
-                                           handler: { (alert) in
-                                            self.imagePicker.sourceType = UIImagePickerController.SourceType.camera;
-                                            self.presentChoice();
-        }))
-        imageAlert.addAction(UIAlertAction(title: "Library",
-                                           style: .default,
-                                           handler: { (alert) in
-                                            self.imagePicker.sourceType = UIImagePickerController.SourceType.photoLibrary;
-                                            self.presentChoice();
-        }))
-
         editOrFollowButton = UIButton()
         editOrFollowButton.setTitle("Edit Profile", for: .normal) //placeholder; button functionality and title determined whether current logged ID matches the profile ID
         editOrFollowButton.setTitleColor(.white, for: .normal)
@@ -185,7 +163,8 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
 
     func setUpConstraints(){
 
-        profileNameLabel.snp.makeConstraints { (make) in            make.top.equalTo(view.safeAreaLayoutGuide)
+        profileNameLabel.snp.makeConstraints { (make) in
+            make.top.equalTo(view.safeAreaLayoutGuide)
             make.centerX.equalTo(view)
             make.height.equalTo(24)
         }
@@ -279,42 +258,9 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
         return UICollectionViewCell()
     }
 
-    //MARK: - Photo Functionability
-
-    @objc func choosePhotoMode(){
-        present(imageAlert, animated: true, completion: nil)
-    }
-
-    func presentChoice(){
-        switch(imagePicker.sourceType){
-        case UIImagePickerController.SourceType.camera:
-            if UIImagePickerController.isSourceTypeAvailable(.camera){
-                present(imagePicker, animated: true, completion: nil)
-            }
-            break
-        case UIImagePickerController.SourceType.photoLibrary:
-            if UIImagePickerController.isSourceTypeAvailable(.photoLibrary){
-                present(imagePicker, animated: true, completion: nil)
-            }
-            break
-        default:
-            print("Something went wrong with choosePhotoMode")
-        }
-    }
-
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        dismiss(animated: true, completion: nil)
-    }
-
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        let imagePicked = info[UIImagePickerController.InfoKey.originalImage] as! UIImage
-        profileImage.setImage(imagePicked, for: .normal)
-        dismiss(animated: true, completion: nil)
-    }
-
     //MARK: - Button Functions
     @objc func editProfile(){
-        //present a FirstLoginViewController with information already inputted
+        present(ProfileEditViewController(), animated: true, completion: nil)
     }
 
     @objc func logout(){

@@ -11,8 +11,8 @@ import UIKit
 class FirstLoginViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
     //Text
-    var nameLabel: UILabel!
     var instructionsTextView: UITextView!
+    var nameTextField: UITextField!
     
     //Image
     var profileImageButton: UIButton!
@@ -30,7 +30,7 @@ class FirstLoginViewController: UIViewController, UIPickerViewDataSource, UIPick
     var majorPickerDataSource: [String] = ["Major", "Undecided", "Africana Studies", "Agricultural Sciences", "American Studies", "Animal Science", "Anthropology", "Applied Economics and Management", "Archaeology", "Architecture", "Asian Studies", "Astronomy", "Atmospheric Science", "Biological Engineering", "Biological Sciences", "Biology and Society", "Biomedical Engineering", "Biometry and Statistics", "Chemical Engineering", "Chemistry and Chemical Biology", "China and Asia-Pacific Studies", "Civil Engineering", "Classics (Classics, Classical Civ., Greek, Latin)", "College Scholar Program", "Communication", "Comparative Literature", "Computer Science", "Design and Environmental Analysis", "Development Sociology", "Earth and Atmospheric Sciences", "Economics", "Electrical and Computer Engineering", "Engineering Physics", "English", "Entomology", "Environmental and Sustainability Sciences", "Environmental Engineering", "Feminist, Gender & Sexuality Studies", "Fiber Science and Apparel Design", "Fine Arts", "Food Science", "French", "German Studies", "Global & Public Health Sciences", "Government", "History", "History of Architecture", "History of Art", "Hotel Administration", "Human Biology, Health and Society", "Human Development", "Independent Major - Arts and Sciences", "Independent Major - Engineering", "Industrial and Labor Relations", "Information Science", "Information Science, Systems, and Technology", "Interdisciplinary Studies", "International Agriculture and Rural Development", "Italian", "Landscape Architecture", "Linguistics", "Materials Science and Engineering", "Mathematics", "Mechnical Engineering", "Music", "Near Eastern Studies", "Nutritional Sciences", "Operations Research and Engineering", "Performing and Media Arts", "Philosophy", "Physics", "Plant Sciences", "Policy Analysis and Management", "Psychology", "Religious Studies", "Science and Technology Studies", "Sociology", "Spanish", "Statistical Science", "Urban and Regional Studies", "Viticulture and Enology"]
     
     //Profile Values
-    var name = "Gonzalo Gonzalez-Pumariega" //placeholder
+    var name = ""
     var classOf: String = "Class Year"
     var college: String = "College"
     var major: String = "Major"
@@ -43,10 +43,10 @@ class FirstLoginViewController: UIViewController, UIPickerViewDataSource, UIPick
         super.viewDidLoad()
         navigationController?.setNavigationBarHidden(true, animated: true) //remove after bc its presentedc
         //MARK: - UI Elements
-        nameLabel = UILabel()
-        nameLabel.text = "Welcome, " + name.split(separator: " ")[0]
-        nameLabel.font = UIFont.systemFont(ofSize: 20)
-        view.addSubview(nameLabel)
+        nameTextField = UITextField()
+        nameTextField.placeholder = "Enter your name"
+        nameTextField.font = UIFont.systemFont(ofSize: 20)
+        view.addSubview(nameTextField)
         
         instructionsTextView = UITextView()
         instructionsTextView.isScrollEnabled = false
@@ -121,20 +121,21 @@ class FirstLoginViewController: UIViewController, UIPickerViewDataSource, UIPick
     }
     
     func setupConstraints(){
-        nameLabel.snp.makeConstraints { (make) in
-            make.top.equalTo(view).offset(25)
-            make.height.equalTo(20)
-            make.centerX.equalTo(view)
-        }
         
         instructionsTextView.snp.makeConstraints { (make) in
-            make.top.equalTo(nameLabel).offset(20)
+            make.top.equalTo(view).offset(25)
             make.height.equalTo(35)
             make.centerX.equalTo(view)
         }
         
+        nameTextField.snp.makeConstraints { (make) in
+            make.top.equalTo(instructionsTextView).offset(40)
+            make.height.equalTo(20)
+            make.centerX.equalTo(view)
+        }
+        
         profileImageButton.snp.makeConstraints { (make) in
-            make.top.equalTo(instructionsTextView).offset(50)
+            make.top.equalTo(nameTextField).offset(40)
             make.width.height.equalTo(100)
             make.centerX.equalTo(view)
         }
@@ -179,16 +180,6 @@ class FirstLoginViewController: UIViewController, UIPickerViewDataSource, UIPick
             return majorPickerDataSource.count
         }
     }
-    
-//    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-//        if pickerView == classPicker{
-//            return classPickerDataSource[row]
-//        } else if pickerView == collegePicker{
-//            return collegePickerDataSource[row]
-//        } else{
-//            return majorPickerDataSource[row]
-//        }
-//    }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if pickerView == classPicker{
@@ -253,7 +244,8 @@ class FirstLoginViewController: UIViewController, UIPickerViewDataSource, UIPick
     
     //MARK: - Button Functions
     @objc func checkIfCanContinue(){
-        if (classOf == "Class Year" || college == "College" || major == "Major"){
+        name = nameTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
+        if (classOf == "Class Year" || college == "College" || major == "Major" || name == ""){
             present(fillAllFieldsAlert, animated: true, completion: nil)
         } else {
             //backend pushing and stuff
