@@ -21,6 +21,7 @@
 		87117C7B21ADF29F0071D2F7 /* PeopleCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87117C7821ADF29F0071D2F7 /* PeopleCollectionViewCell.swift */; };
 		87117C7C21ADF29F0071D2F7 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87117C7921ADF29F0071D2F7 /* SearchViewController.swift */; };
 		87117C7D21ADF29F0071D2F7 /* PeopleFilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87117C7A21ADF29F0071D2F7 /* PeopleFilterViewController.swift */; };
+		871B661E21B3BC6F00D41173 /* FirstLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 871B661D21B3BC6F00D41173 /* FirstLoginViewController.swift */; };
 		93D6C24190860A24FC1897AA /* Pods_CornellSocialMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 842AAB4DFEA9BA89D9ED410E /* Pods_CornellSocialMedia.framework */; };
 /* End PBXBuildFile section */
 
@@ -43,6 +44,7 @@
 		87117C7821ADF29F0071D2F7 /* PeopleCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeopleCollectionViewCell.swift; sourceTree = "<group>"; };
 		87117C7921ADF29F0071D2F7 /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		87117C7A21ADF29F0071D2F7 /* PeopleFilterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeopleFilterViewController.swift; sourceTree = "<group>"; };
+		871B661D21B3BC6F00D41173 /* FirstLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstLoginViewController.swift; sourceTree = "<group>"; };
 		D4BFF1282C8DE51CA1FC1667 /* Pods-CornellSocialMedia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CornellSocialMedia.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CornellSocialMedia/Pods-CornellSocialMedia.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -75,6 +77,7 @@
 				87117C7621ADF2740071D2F7 /* ProfileViewController.swift */,
 				4FA0576B21A3B0BB000F0544 /* LoginViewController.swift */,
 				4F1404A021A7901B00490722 /* MainFeedViewController.swift */,
+				871B661D21B3BC6F00D41173 /* FirstLoginViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -272,6 +275,7 @@
 				4FA0576C21A3B0BB000F0544 /* LoginViewController.swift in Sources */,
 				4FA0576A21A3B0BB000F0544 /* AppDelegate.swift in Sources */,
 				87117C7521ADF2660071D2F7 /* People.swift in Sources */,
+				871B661E21B3BC6F00D41173 /* FirstLoginViewController.swift in Sources */,
 				87117C7D21ADF29F0071D2F7 /* PeopleFilterViewController.swift in Sources */,
 				87117C7721ADF2740071D2F7 /* ProfileViewController.swift in Sources */,
 				4F0D269721A738AA00AA8AB4 /* Gradient.swift in Sources */,
