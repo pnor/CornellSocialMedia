@@ -149,7 +149,6 @@ class MainFeedCollectionViewCell: UICollectionViewCell {
                 textBodyLabel.text = postText
                 textBodyLabel.numberOfLines = maxLinesOfTextPost
                 textBodyLabel.font = UIFont.systemFont(ofSize: 17)
-                //textBodyLabel.sizeToFit()
                 containerView.addSubview(textBodyLabel)
             }
         case .imagePost:
@@ -158,7 +157,6 @@ class MainFeedCollectionViewCell: UICollectionViewCell {
                 textBodyLabel.text = postText
                 textBodyLabel.numberOfLines = maxLinesOfCaption
                 textBodyLabel.font = UIFont.systemFont(ofSize: 17)
-                //textBodyLabel.sizeToFit()
                 containerView.addSubview(textBodyLabel)
             }
         default:
@@ -266,11 +264,4 @@ class MainFeedCollectionViewCell: UICollectionViewCell {
             return post.text == nil ? PostType.imagePostNoCaption : PostType.imagePost
         }
     }
-}
-
-enum PostType {
-    case textPost
-    case imagePost
-    case imagePostNoCaption
-    case blankPost
 }

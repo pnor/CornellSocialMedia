@@ -133,9 +133,3 @@ class Debugging {
         case noBody = 6 // A Text post with no text (or image)
     }
 }
-
-extension Post {
-    func copy() -> Post {
-        return Post(name: self.name, profileImage: self.profileImage, body: self.text, image: self.image)
-    }
-}

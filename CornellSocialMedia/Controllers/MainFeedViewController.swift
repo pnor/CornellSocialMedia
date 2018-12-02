@@ -40,9 +40,6 @@ class MainFeedViewController: UIViewController, UICollectionViewDelegate, UIColl
     let blankMessageHeight : CGFloat = 80
     let textMessageBaseHeight : CGFloat = 80
     let imageMessageBaseHeight : CGFloat = 200
-    
-    // Transitions / Animations
-    var transitionDirection = 0 /// 1 : Right -1 : Left
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -63,10 +60,8 @@ class MainFeedViewController: UIViewController, UICollectionViewDelegate, UIColl
         
         messagesLayout = UICollectionViewFlowLayout()
         messagesLayout.scrollDirection = .vertical
-        //messagesLayout.minimumInteritemSpacing = 1000000
         messagesLayout.minimumLineSpacing = padding
-        //messagesLayout.itemSize = UICollectionView.sizeThatFits()
-//        messagesLayout.estimatedItemSize = CGSize(width: UIScreen.main.bounds.width - CGFloat(padding * 2), height: 340)
+        messagesLayout.minimumInteritemSpacing = 10000
         
         messagesCollection = UICollectionView(frame: .zero, collectionViewLayout: messagesLayout)
         messagesCollection.delegate = self
@@ -106,7 +101,6 @@ class MainFeedViewController: UIViewController, UICollectionViewDelegate, UIColl
         
         //TODO Get Post Data
         posts = getPosts()
-        messagesCollection.reloadData()
         
         setupConstraints()
     }
@@ -114,7 +108,7 @@ class MainFeedViewController: UIViewController, UICollectionViewDelegate, UIColl
     // MARK: - UI Positioning
     func setupConstraints() {
         messagesCollection.snp.makeConstraints { (make) in
-            make.edges.equalToSuperview()//.inset(UIEdgeInsets(top: 60, left: 0, bottom: 0, right: 0))
+            make.edges.equalToSuperview()
         }
     }
     
@@ -142,13 +136,10 @@ class MainFeedViewController: UIViewController, UICollectionViewDelegate, UIColl
     }
     
     @objc func refresh() {
-        print("Refresh")
         // Update all cell heights
         let timer = Timer(timeInterval: 3.0, repeats: false, block: { (timer) in
             DispatchQueue.main.async {
                 self.posts = self.getPosts()
-                print("-----")
-                print(self.posts ?? "Nothing...😨")
                 self.messagesCollection.reloadData()
             }
             self.refreshControl.endRefreshing()
@@ -190,6 +181,7 @@ class MainFeedViewController: UIViewController, UICollectionViewDelegate, UIColl
             if let feedCell = cell as? MainFeedCollectionViewCell {
                 feedCell.clean()
                 feedCell.configure(with: post)
+                feedCell.hero.id = "Post\(indexPath.row)"
             }
             cell.setNeedsUpdateConstraints()
             return cell
@@ -199,8 +191,10 @@ class MainFeedViewController: UIViewController, UICollectionViewDelegate, UIColl
     
     // MARK: UICollectionViewDelegate
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("selected \(String(describing: posts?[indexPath.row])) Should go to another screen")
-        return
+        let commentViewController = CommentViewController()
+        commentViewController.setCell(with: posts?[indexPath.row] as! Post)
+        commentViewController.setAnimationData(with: indexPath)
+        navigationController?.pushViewController(commentViewController, animated: true)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -217,32 +211,10 @@ class MainFeedViewController: UIViewController, UICollectionViewDelegate, UIColl
         
         let textWidth = width - CGFloat(padding * 2)
         
-         let textHeight = post.text == nil ? 0 : post.text!.height(withConstrainedWidth: textWidth, font: UIFont.systemFont(ofSize: 17))
-    
+        let textHeight = post.text == nil ? 0 : post.text!.height(withConstrainedWidth: textWidth, font: UIFont.systemFont(ofSize: 17))
+        
         let height : CGFloat = MainFeedCollectionViewCell.headerHeight(post: post) + textHeight + MainFeedCollectionViewCell.footerHeight(post: post)
         
         return CGSize(width: width, height: height)
-    }
-}
-
-extension ClosedRange {
-    func clamp(_ value : Bound) -> Bound {
-        return self.lowerBound > value ? self.lowerBound
-            : self.upperBound < value ? self.upperBound
-            : value
-    }
-}
-
-extension String {
-    func height(withConstrainedWidth width: CGFloat, font: UIFont) -> CGFloat {
-        let constraintRect = CGSize(width: width, height: .greatestFiniteMagnitude)
-        let boundingBox = self.boundingRect(with: constraintRect, options: .usesLineFragmentOrigin, attributes: [.font: font], context: nil)
-        return ceil(boundingBox.height)
-    }
-    
-    func width(withConstrainedHeight height: CGFloat, font: UIFont) -> CGFloat {
-        let constraintRect = CGSize(width: .greatestFiniteMagnitude, height: height)
-        let boundingBox = self.boundingRect(with: constraintRect, options: .usesLineFragmentOrigin, attributes: [.font: font], context: nil)
-        return ceil(boundingBox.width)
     }
 }
