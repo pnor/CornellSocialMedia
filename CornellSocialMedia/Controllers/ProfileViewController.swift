@@ -27,7 +27,17 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
     var imagePicker: UIImagePickerController!
     var imageAlert: UIAlertController!
     
+    override func viewWillAppear(_ animated: Bool) {
+        let navigationBar = self.navigationController?.navigationBar
+        navigationBar!.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
+        navigationBar!.shadowImage = UIImage()
+    }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        let navigationBar = self.navigationController?.navigationBar
+        navigationBar!.setBackgroundImage(nil, for: UIBarMetrics.default)
+        navigationBar!.shadowImage = nil
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -113,11 +123,6 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
         
         // MARK: Background
         view.backgroundColor = UIColor(displayP3Red: 100/255, green: 10/255, blue: 10/255, alpha: 1.0)
-        
-        // MARK: NavigationBar
-        let navigationBar = self.navigationController?.navigationBar
-        navigationBar!.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
-        navigationBar!.shadowImage = UIImage()
         
         setUpConstraints()
     }
