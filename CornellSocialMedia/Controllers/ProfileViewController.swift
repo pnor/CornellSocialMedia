@@ -178,6 +178,7 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
         profileMajorLabel.hero.modifiers = [.translate(x:100)]
         profileCollegeLabel.hero.modifiers = [.translate(x:100)]
         profileNavigator.hero.modifiers = [.translate(x:100)]
+        editOrFollowButton.hero.modifiers = [.translate(x:100)]
 
         setUpConstraints()
     }
