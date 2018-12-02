@@ -129,7 +129,7 @@ class LoginViewController: UIViewController {
      Gets a random image from the assets name "cornell#" where # is an integer
      */
     func getABackgroundImage() -> UIImage {
-        let cornellImages = (1...2)
+        let cornellImages = (1...8)
         let randomInt = cornellImages.randomElement() ?? 1
         if let image = UIImage(named: "cornell\(randomInt)") { // all is well
             return image

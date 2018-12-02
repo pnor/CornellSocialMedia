@@ -102,7 +102,13 @@ class Debugging {
         let possibleImages = [
             "cornellC",
             "cornell1",
-            "cornell2"
+            "cornell2",
+            "cornell3",
+            "cornell4",
+            "cornell5",
+            "cornell6",
+            "cornell7",
+            "cornell8",
         ]
         return UIImage(named: possibleImages.randomElement()!)!
     }
