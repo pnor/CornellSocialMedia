@@ -15,6 +15,9 @@ class CommentViewController: UIViewController, UICollectionViewDelegate, UIColle
     var commentsCollectionView : UICollectionView! = nil
     let reuseIdentfier = "reuse"
     var refreshControl : UIRefreshControl!
+    var postButton : UIButton!
+    var dividingLine : UIView!
+    var commentsLabel : UILabel!
     
     // The Original Post
     private var mainPost : Post!
@@ -90,6 +93,28 @@ class CommentViewController: UIViewController, UICollectionViewDelegate, UIColle
             }
         }
         
+        // Post Button
+        postButton = UIButton()
+        postButton.setTitle("Post", for: .normal)
+        postButton.addTarget(self, action: #selector(post), for: .touchDown)
+        postButton.setTitleColor(.red, for: .normal)
+        postButton.layer.cornerRadius = 5
+        postButton.layer.masksToBounds = true
+        postButton.backgroundColor = .white
+        view.addSubview(postButton)
+        
+        // Dividing Line
+        dividingLine = UIView()
+        dividingLine.backgroundColor = .white
+        view.addSubview(dividingLine)
+        
+        // Comments Label
+        commentsLabel = UILabel()
+        commentsLabel.text = "Comments"
+        commentsLabel.font = UIFont.systemFont(ofSize: 18, weight: .bold)
+        commentsLabel.textColor = .white
+        view.addSubview(commentsLabel)
+        
         // Comments Collection View
         let commentsFlowLayout = UICollectionViewFlowLayout()
         commentsFlowLayout.scrollDirection = .vertical
@@ -134,6 +159,9 @@ class CommentViewController: UIViewController, UICollectionViewDelegate, UIColle
         view.hero.id = "backdrop"
         backgroundSquare.hero.id = animationID
         commentsCollectionView.hero.modifiers = [.translate(y: 100)]
+        commentsLabel.hero.modifiers = [.translate(y: 100)]
+        postButton.hero.modifiers = [.translate(y: 100)]
+        dividingLine.hero.modifiers = [.translate(y: 100)]
         
         setupConstraints()
     }
@@ -186,9 +214,27 @@ class CommentViewController: UIViewController, UICollectionViewDelegate, UIColle
             }
         }
         
+        commentsLabel.snp.makeConstraints { (make) in
+            make.leading.equalToSuperview().offset(padding)
+            make.top.equalTo(backgroundSquare.snp.bottom).offset(padding)
+            make.width.equalTo(100)
+        }
+        
+        postButton.snp.makeConstraints { (make) in
+            make.leading.equalTo(commentsLabel.snp.trailing).offset(10)
+            make.trailing.equalToSuperview().offset(-10)
+            make.centerY.equalTo(commentsLabel)
+            make.height.equalTo(30)
+        }
+        
+        dividingLine.snp.makeConstraints { (make) in
+            make.leading.trailing.equalToSuperview()
+            make.height.equalTo(1)
+            make.top.equalTo(commentsLabel.snp.bottom).offset(10)
+        }
         
         commentsCollectionView.snp.makeConstraints { (make) in
-            make.top.equalTo(backgroundSquare.snp.bottom).offset(padding)
+            make.top.equalTo(dividingLine.snp.bottom)
             make.leading.trailing.equalToSuperview()
             make.bottom.equalToSuperview()
         }
@@ -230,6 +276,10 @@ class CommentViewController: UIViewController, UICollectionViewDelegate, UIColle
             self.refreshControl.endRefreshing()
         })
         timer.fire()
+    }
+    
+    @objc func post() {
+        // go to a view controller
     }
     
     // MARK: - Debugging
