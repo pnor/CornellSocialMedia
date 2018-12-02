@@ -75,6 +75,15 @@ class MainFeedViewController: UIViewController, UICollectionViewDelegate, UIColl
         messagesCollection.register(MainFeedCollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         view.addSubview(messagesCollection)
         
+        // Swiping
+        let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(respondToSwipeGesture(gesture:)))
+        swipeRight.direction = .right
+        view.addGestureRecognizer(swipeRight)
+        
+        let swipeLeft = UISwipeGestureRecognizer(target: self, action: #selector(respondToSwipeGesture(gesture:)))
+        swipeLeft.direction = .left
+        view.addGestureRecognizer(swipeLeft)
+        
         // Refresh Control
         refreshControl = UIRefreshControl()
         refreshControl.tintColor = .white
@@ -105,6 +114,20 @@ class MainFeedViewController: UIViewController, UICollectionViewDelegate, UIColl
     func setupConstraints() {
         messagesCollection.snp.makeConstraints { (make) in
             make.edges.edges.equalToSuperview().inset(UIEdgeInsets(top: 60, left: 0, bottom: 0, right: 0))
+        }
+    }
+    
+    // MARK: - Handling Swipes
+    @objc func respondToSwipeGesture(gesture: UIGestureRecognizer) {
+        if let swipeGesture = gesture as? UISwipeGestureRecognizer {
+            switch swipeGesture.direction {
+            case .right:
+                goToSearch()
+            case .left:
+                goToProfile()
+            default:
+                print("Swiped in a unhandled direction")
+            }
         }
     }
     

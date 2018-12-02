@@ -29,6 +29,11 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        //MARK: Title
+        title = "Profile"
+        let textAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+        navigationController?.navigationBar.titleTextAttributes = textAttributes
+        
         // MARK: - UI Elements
         profileNameLabel = UILabel()
         profileNameLabel.text = "Gonzalo Gonzalez-Pumariega" //placeholder
@@ -86,12 +91,17 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
         view.addSubview(profileNavigatorView)
         
         backButton = UIBarButtonItem()
-        backButton.title = "<Back"
+        backButton.title = "Back"
         backButton.target = self
         backButton.tintColor = .white
         backButton.action = #selector(goBack)
         navigationItem.leftBarButtonItem = backButton
         navigationItem.hidesBackButton = true
+        
+        // Swiping
+        let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(respondToSwipeGesture(gesture:)))
+        swipeRight.direction = .right
+        view.addGestureRecognizer(swipeRight)
         
         // MARK: Background
         view.backgroundColor = .white
@@ -116,7 +126,7 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
     func setUpConstraints(){
         
         profileNameLabel.snp.makeConstraints { (make) in
-            make.top.equalTo(view).offset(75)
+            make.top.equalTo(view.safeAreaLayoutGuide).offset(25)
             make.left.equalTo(view).offset(25)
             make.width.equalTo(375)
             make.height.equalTo(24)
@@ -150,7 +160,7 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
         }
         
         profileNavigator.snp.makeConstraints { (make) in
-            make.left.right.equalTo(view)
+            make.left.right.equalTo(view.safeAreaLayoutGuide)
             make.top.equalTo(profileMajorLabel).offset(50)
             make.height.equalTo(25)
         }
@@ -161,8 +171,21 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
         }
     }
     
+    // MARK: Change Views
     @objc func goBack() {
         navigationController?.popViewController(animated: true)
+    }
+    
+    // MARK: - Handling Swipes
+    @objc func respondToSwipeGesture(gesture: UIGestureRecognizer) {
+        if let swipeGesture = gesture as? UISwipeGestureRecognizer {
+            switch swipeGesture.direction {
+            case .right:
+                goBack()
+            default:
+                print("Swiped in a unhandled direction")
+            }
+        }
     }
     
     //MARK: - Segmented Control

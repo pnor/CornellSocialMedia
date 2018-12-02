@@ -23,13 +23,17 @@ class SearchViewController: UIViewController, UICollectionViewDataSource, UIColl
     var people: [People] = []
     
     let person1 = People(name: "Gonzalo Gonzalez", photo: UIImage(named: "cornell1")!, classOf: 2022, college: "College of Engineering", major: "Computer Science")
-    let person2 = People(name: "Phillip O' Reggio", photo: UIImage(named: "cornell2")!, classOf: 2023, college: "College of Engineering", major: "iOS")
+    let person2 = People(name: "Phillip O'Reggio", photo: UIImage(named: "cornell2")!, classOf: 2023, college: "College of Engineering", major: "iOS")
     let person3 = People(name: "Alisa Lai", photo: UIImage(named: "cornell1")!, classOf: 3022, college: "College of Engineering", major: "Backend")
     let person4 = People(name: "Vivian Cheng", photo: UIImage(named: "cornell2")!, classOf: 3023, college: "College of Engineering", major: "Design")
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        //MARK: Title
+        title = "Search"
+        let textAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+        navigationController?.navigationBar.titleTextAttributes = textAttributes
         people = [person1, person2, person3, person4, person3, person1, person4, person2, person3, person1, person4, person2]
         
         //people = [person1, person2]
@@ -39,7 +43,9 @@ class SearchViewController: UIViewController, UICollectionViewDataSource, UIColl
         searchPeopleController.searchResultsUpdater = self
         searchPeopleController.dimsBackgroundDuringPresentation = false
         searchPeopleController.searchBar.placeholder = "Find people"
+        UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).defaultTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         searchPeopleController.searchBar.sizeToFit()
+        UIButton.appearance(whenContainedInInstancesOf: [UISearchBar.self]).setTitleColor(.white, for: .normal) // nothing happens
         definesPresentationContext = true
         navigationItem.searchController = searchPeopleController
         navigationItem.hidesSearchBarWhenScrolling = false
@@ -65,12 +71,17 @@ class SearchViewController: UIViewController, UICollectionViewDataSource, UIColl
         navigationItem.leftBarButtonItem = filterButton
         
         rightBackButton = UIBarButtonItem()
-        rightBackButton.title = "Back>"
+        rightBackButton.title = "Back"
         rightBackButton.target = self
         rightBackButton.tintColor = .white
         rightBackButton.action = #selector(goBack)
         navigationItem.rightBarButtonItem = rightBackButton
         navigationItem.hidesBackButton = true
+        
+        // Swiping
+        let swipeLeft = UISwipeGestureRecognizer(target: self, action: #selector(respondToSwipeGesture(gesture:)))
+        swipeLeft.direction = .left
+        view.addGestureRecognizer(swipeLeft)
         
         //MARK: Background
         view.backgroundColor = .white
@@ -94,17 +105,30 @@ class SearchViewController: UIViewController, UICollectionViewDataSource, UIColl
         }
     }
     
-    //MARK: - Modal Controller Presenters
+    // MARK: Changing Views
     @objc func goBack() {
         self.navigationController?.popViewController(animated: true)
     }
     
+    //MARK: - Modal Controller Presenters
     @objc func presentPeopleFilterViewController(){
         let peopleFilter = PeopleFilterViewController()
         //peopleFilter.peopleFilterDelegate = self
         //filters chosen should go in an array of filters that then filters the people in a database accordingly
         //filters should save while still in search but clears when you go back to message board~
         present(peopleFilter, animated: true, completion: nil)
+    }
+    
+    // MARK: - Handling Swipes
+    @objc func respondToSwipeGesture(gesture: UIGestureRecognizer) {
+        if let swipeGesture = gesture as? UISwipeGestureRecognizer {
+            switch swipeGesture.direction {
+            case .left:
+                goBack()
+            default:
+                print("Swiped in a unhandled direction")
+            }
+        }
     }
 
     //MARK: - Collection View
@@ -118,7 +142,7 @@ class SearchViewController: UIViewController, UICollectionViewDataSource, UIColl
         cell.configure(with: person)
         cell.setNeedsUpdateConstraints()
         cell.layer.masksToBounds = true
-        cell.layer.cornerRadius = 25
+        cell.layer.cornerRadius = 5
         return cell
     }
     
