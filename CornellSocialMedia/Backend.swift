@@ -14,6 +14,7 @@ class Backend {
     
     private static let loginEndpoint = "http://35.243.236.152/login/"
     private static let createProfileEndpoint = "http://35.243.236.152/api/profile/user/create/"
+    private static let getProfileEndpoint = "http://35.243.236.152/api/profile/user/"
     
     static func login(username: String, password: String, completion: @escaping (String) -> Void){
         let parameters: [String: Any] = [
@@ -44,6 +45,25 @@ class Backend {
             switch response.result{
             case .success(_):
                 print("success!!!!")
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
+    static func getProfile(completion: @escaping (Peoples) -> Void){
+        Alamofire.request(getProfileEndpoint, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: nil).validate().responseData { (response) in
+            switch response.result{
+            case .success(let data):
+                if let json = try? JSONSerialization.jsonObject(with: data, options: .allowFragments){
+                    print(json)
+                }
+                
+                let decoder = JSONDecoder()
+                if let user = try? decoder.decode(Peoples.self, from: data){
+                    print(user)
+                 completion(user)
+                }
             case .failure(let error):
                 print(error.localizedDescription)
             }

@@ -24,11 +24,29 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
 
     //Collection View Elements
     let peopleViewReuseIdentifier = "peopleViewReuseIdentifier"
+    
+    //Backend Variables
+    var name: String!
+    var image: UIImage!
+    var classOf: String!
+    var college: String!
+    var major: String!
 
     override func viewWillAppear(_ animated: Bool) {
         let navigationBar = self.navigationController?.navigationBar
         navigationBar!.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
         navigationBar!.shadowImage = UIImage()
+        
+        Backend.getProfile { (user) in
+            self.name = user.display_name
+            let imageURL = URL(string: user.image)!
+            let imageData = try! Data(contentsOf: imageURL)
+            self.image = UIImage(data: imageData)
+            self.classOf = String(user.year)
+            self.college = user.college
+            self.major = user.major
+            self.setValues()
+        }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -46,15 +64,13 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
 
         // MARK: - UI Elements
         profileNameLabel = UILabel()
-        profileNameLabel.text = "Gonzalo Gonzalez-Pumariega" //placeholder
-        //should auto-resize font when too big to fit
-        //not priority feature
+        //profileNameLabel.text = name
         profileNameLabel.font = UIFont.systemFont(ofSize: 20, weight: .bold)
         profileNameLabel.textColor = .white
         view.addSubview(profileNameLabel)
 
         profileImage = UIImageView()
-        profileImage.image = UIImage(named: "cornell2")
+        //profileImage.image = image
         profileImage.contentMode = .scaleAspectFill
         profileImage.layer.borderWidth = 1
         profileImage.layer.borderColor = UIColor.white.cgColor
@@ -63,19 +79,19 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
         view.addSubview(profileImage)
 
         profileClassLabel = UILabel()
-        profileClassLabel.text = "Class of 2022" //placeholder
+        //profileClassLabel.text = "Class of " + classOf
         profileClassLabel.font = UIFont.systemFont(ofSize: 18)
         profileClassLabel.textColor = .white
         view.addSubview(profileClassLabel)
 
         profileCollegeLabel = UILabel()
-        profileCollegeLabel.text = "College of Engineering" //placeholder
+        //profileCollegeLabel.text = college
         profileCollegeLabel.font = UIFont.systemFont(ofSize: 18)
         profileCollegeLabel.textColor = .white
         view.addSubview(profileCollegeLabel)
 
         profileMajorLabel = UILabel()
-        profileMajorLabel.text = "Computer Science" //placeholder
+        //profileMajorLabel.text = major
         profileMajorLabel.font = UIFont.systemFont(ofSize: 18)
         profileMajorLabel.textColor = .white
         view.addSubview(profileMajorLabel)
@@ -177,6 +193,15 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
             make.top.equalTo(profileNavigatorView)
             make.width.bottom.equalTo(view)
         }
+    }
+    
+    //Backend Function
+    func setValues(){
+        profileNameLabel.text = name
+        profileImage.image = image
+        profileClassLabel.text = "Class of " + classOf
+        profileCollegeLabel.text = college
+        profileMajorLabel.text = major
     }
 
     // MARK: Change Views
