@@ -13,31 +13,37 @@ class SearchViewController: UIViewController, UICollectionViewDataSource, UIColl
     //MARK: - UI Elements
     var searchPeopleController: UISearchController!
     var peopleCollectionView: UICollectionView!
-    var filterButton: UIBarButtonItem!
+
     var rightBackButton: UIBarButtonItem!
-    
+
+
     // Collection View Elements
     let peopleReuseIdentifier = "peopleReuseIdentifier"
-    
+
     //MARK: - People Information
     var people: [People] = []
-    
+    var peoplePlaceHolder: [People] = []
+
     let person1 = People(name: "Gonzalo Gonzalez", photo: UIImage(named: "cornell1")!, classOf: 2022, college: "College of Engineering", major: "Computer Science")
     let person2 = People(name: "Phillip O'Reggio", photo: UIImage(named: "cornell2")!, classOf: 2023, college: "College of Engineering", major: "iOS")
     let person3 = People(name: "Alisa Lai", photo: UIImage(named: "cornell1")!, classOf: 3022, college: "College of Engineering", major: "Backend")
     let person4 = People(name: "Vivian Cheng", photo: UIImage(named: "cornell2")!, classOf: 3023, college: "College of Engineering", major: "Design")
-    
+
+    override func viewWillAppear(_ animated: Bool) {
+        navigationController?.navigationBar.barTintColor = UIColor(displayP3Red: 179/255, green: 27/255, blue: 27/255, alpha: 1.0)
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        let navigationBar = navigationController?.navigationBar
+        navigationBar!.barTintColor = .white
+        navigationBar!.isTranslucent = true
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        //MARK: Title
-        title = "Search"
-        let textAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
-        navigationController?.navigationBar.titleTextAttributes = textAttributes
-        people = [person1, person2, person3, person4, person3, person1, person4, person2, person3, person1, person4, person2]
-        
-        //people = [person1, person2]
-        
+        peoplePlaceHolder = [person1, person2, person3, person4]
+
         //MARK: - UI Elements
         searchPeopleController = UISearchController(searchResultsController: nil)
         searchPeopleController.searchResultsUpdater = self
@@ -49,7 +55,7 @@ class SearchViewController: UIViewController, UICollectionViewDataSource, UIColl
         definesPresentationContext = true
         navigationItem.searchController = searchPeopleController
         navigationItem.hidesSearchBarWhenScrolling = false
-        
+
         let peopleLayout = UICollectionViewFlowLayout()
         peopleLayout.scrollDirection = .vertical
         //peopleLayout.minimumInteritemSpacing = 32
@@ -62,14 +68,7 @@ class SearchViewController: UIViewController, UICollectionViewDataSource, UIColl
         peopleCollectionView.alwaysBounceVertical = true
         peopleCollectionView.register(PeopleCollectionViewCell.self, forCellWithReuseIdentifier: peopleReuseIdentifier)
         view.addSubview(peopleCollectionView)
-        
-        filterButton = UIBarButtonItem()
-        filterButton.title = "Filter"
-        filterButton.target = self
-        filterButton.tintColor = .white
-        filterButton.action = #selector(presentPeopleFilterViewController)
-        navigationItem.leftBarButtonItem = filterButton
-        
+
         rightBackButton = UIBarButtonItem()
         rightBackButton.title = "Back"
         rightBackButton.target = self
@@ -77,15 +76,15 @@ class SearchViewController: UIViewController, UICollectionViewDataSource, UIColl
         rightBackButton.action = #selector(goBack)
         navigationItem.rightBarButtonItem = rightBackButton
         navigationItem.hidesBackButton = true
-        
+
         // Swiping
         let swipeLeft = UISwipeGestureRecognizer(target: self, action: #selector(respondToSwipeGesture(gesture:)))
         swipeLeft.direction = .left
         view.addGestureRecognizer(swipeLeft)
-        
+
         //MARK: Background
         view.backgroundColor = .white
-        
+
         // MARK: Animations
         hero.isEnabled = true
         view.hero.id = "backdrop"
@@ -95,30 +94,21 @@ class SearchViewController: UIViewController, UICollectionViewDataSource, UIColl
                            gradient: .topLeftBottomRight)
         peopleCollectionView.hero.modifiers = [.translate(x:-100)]
 
-        
+
         setUpConstraints()
     }
-    
+
     func setUpConstraints(){
         peopleCollectionView.snp.makeConstraints { (make) in
             make.top.left.right.bottom.equalTo(view)
         }
     }
-    
+
     // MARK: Changing Views
     @objc func goBack() {
         self.navigationController?.popViewController(animated: true)
     }
-    
-    //MARK: - Modal Controller Presenters
-    @objc func presentPeopleFilterViewController(){
-        let peopleFilter = PeopleFilterViewController()
-        //peopleFilter.peopleFilterDelegate = self
-        //filters chosen should go in an array of filters that then filters the people in a database accordingly
-        //filters should save while still in search but clears when you go back to message board~
-        present(peopleFilter, animated: true, completion: nil)
-    }
-    
+
     // MARK: - Handling Swipes
     @objc func respondToSwipeGesture(gesture: UIGestureRecognizer) {
         if let swipeGesture = gesture as? UISwipeGestureRecognizer {
@@ -135,7 +125,7 @@ class SearchViewController: UIViewController, UICollectionViewDataSource, UIColl
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return people.count
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: peopleReuseIdentifier, for: indexPath) as! PeopleCollectionViewCell
         let person = people[indexPath.item]
@@ -145,14 +135,40 @@ class SearchViewController: UIViewController, UICollectionViewDataSource, UIColl
         cell.layer.cornerRadius = 5
         return cell
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = peopleCollectionView.frame.width
         return CGSize(width: width-25, height: 175)
     }
-    
+
     //MARK: - Search Controller
     func updateSearchResults(for searchController: UISearchController) {
-        //TODO after filters page
+        if let searchText = searchPeopleController.searchBar.text {
+            if !searchText.isEmpty {
+                for person in peoplePlaceHolder{
+                    let hasPerson = people.contains { (peoplePerson) -> Bool in
+                        if person.name == peoplePerson.name{
+                            return true
+                        }
+                        return false
+                    }
+                    if (hasPerson){
+                        if person.name.lowercased().range(of: searchText.lowercased()) == nil{
+                            people = people.filter({ (peoplePerson) -> Bool in
+                                return person.name != peoplePerson.name
+                            })
+                        }
+                    } else {
+                        if person.name.lowercased().range(of: searchText.lowercased()) != nil{
+                            people.append(person)
+                        }
+                    }
+                }
+                peopleCollectionView.reloadData()
+            } else {
+                self.people = []
+                peopleCollectionView.reloadData()
+            }
+        }
     }
 }

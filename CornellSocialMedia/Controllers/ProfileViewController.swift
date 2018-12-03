@@ -34,13 +34,12 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
         navigationBar!.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
         navigationBar!.shadowImage = UIImage()
     }
-
+    
     override func viewWillDisappear(_ animated: Bool) {
         let navigationBar = self.navigationController?.navigationBar
         navigationBar!.setBackgroundImage(nil, for: UIBarMetrics.default)
         navigationBar!.shadowImage = nil
     }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -171,7 +170,7 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
         }
         
         profileImage.snp.makeConstraints { (make) in
-            make.top.equalTo(profileNameLabel).offset(45)
+            make.top.equalTo(profileNameLabel).offset(25)
             make.centerX.equalTo(profileNameLabel)
             make.height.width.equalTo(100)
         }
@@ -253,6 +252,7 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
     }
     
     //MARK: - Photo Functionability
+    
     @objc func choosePhotoMode(){
         present(imageAlert, animated: true, completion: nil)
     }
