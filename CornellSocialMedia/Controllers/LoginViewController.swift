@@ -127,13 +127,16 @@ class LoginViewController: UIViewController {
         Backend.login(username: username.text!, password: password.text!) { (error) in
             switch(error){
             case "User exists":
-                self.present(PlaceholderViewController(), animated: true, completion: nil)
+                self.navigationController?.pushViewController(MainFeedViewController(), animated: true)
             case "Response status code was unacceptable: 403.":
                 self.present(self.wrongPasswordAlert, animated: true, completion: nil)
+                self.login.setTitleColor(.white, for: .normal)
             case "Response status code was unacceptable: 404.":
                 self.present(self.badEmailAlert, animated: true, completion: nil)
+                self.login.setTitleColor(.white, for: .normal)
             case "Response status code was unacceptable: 406.":
                 self.present(FirstLoginViewController(), animated: true, completion: nil)
+                self.login.setTitleColor(.white, for: .normal)
             default:
                 print(error)
         }
