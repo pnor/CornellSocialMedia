@@ -16,6 +16,10 @@ class MainFeedViewController: UIViewController, UICollectionViewDelegate, UIColl
     var search : UIBarButtonItem!
     var profile : UIBarButtonItem!
     
+    // UI Elements
+    var postButton : UIButton!
+    var divider : UIView!
+    
     // Main Display
     var messagesCollection : UICollectionView!
     var messagesLayout : UICollectionViewFlowLayout!
@@ -71,6 +75,20 @@ class MainFeedViewController: UIViewController, UICollectionViewDelegate, UIColl
         messagesCollection.register(MainFeedCollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         view.addSubview(messagesCollection)
         
+        // Post Button
+        postButton = UIButton()
+        postButton.setTitle("Post", for: .normal)
+        postButton.addTarget(self, action: #selector(createPost), for: .touchDown)
+        postButton.setTitleColor(.red, for: .normal)
+        postButton.layer.cornerRadius = 5
+        postButton.layer.masksToBounds = true
+        postButton.backgroundColor = .white
+        view.addSubview(postButton)
+        
+        divider = UIView()
+        divider.backgroundColor = .white
+        view.addSubview(divider)
+        
         // Swiping
         let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(respondToSwipeGesture(gesture:)))
         swipeRight.direction = .right
@@ -107,9 +125,23 @@ class MainFeedViewController: UIViewController, UICollectionViewDelegate, UIColl
     
     // MARK: - UI Positioning
     func setupConstraints() {
-        messagesCollection.snp.makeConstraints { (make) in
-            make.edges.equalToSuperview()
+        postButton.snp.makeConstraints { (make) in
+            make.top.equalTo(view.safeAreaLayoutGuide).offset(10)
+            make.leading.equalToSuperview().offset(padding)
+            make.width.equalTo(180)
+            make.height.equalTo(30)
         }
+        
+        divider.snp.makeConstraints { (make) in
+            make.leading.trailing.equalToSuperview()
+            make.top.equalTo(postButton.snp.bottom).offset(10)
+            make.height.equalTo(3)
+        }
+        messagesCollection.snp.makeConstraints { (make) in
+            make.top.equalTo(divider)
+            make.leading.trailing.bottom.equalToSuperview()
+        }
+            
     }
     
     // MARK: - Handling Swipes
@@ -126,7 +158,7 @@ class MainFeedViewController: UIViewController, UICollectionViewDelegate, UIColl
         }
     }
     
-    // MARK: - Navigation Bar Button Methods and Refresh
+    // MARK: - Navigation Bar Button Methods and Refresh + Post Button
     @objc func goToProfile() {
         self.navigationController?.pushViewController(ProfileViewController(), animated: true)
     }
@@ -134,6 +166,14 @@ class MainFeedViewController: UIViewController, UICollectionViewDelegate, UIColl
     @objc func goToSearch() {
         navigationController?.pushViewController(SearchViewController(), animated: true)
     }
+    
+    @objc func createPost() {
+        var postViewController = PostViewController()
+        postViewController.allowsImagePosting = true
+        postViewController.fromComments = false
+        navigationController?.pushViewController(postViewController, animated: true)
+    }
+    
     
     @objc func refresh() {
         // Update all cell heights

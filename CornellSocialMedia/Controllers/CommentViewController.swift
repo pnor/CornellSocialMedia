@@ -279,7 +279,10 @@ class CommentViewController: UIViewController, UICollectionViewDelegate, UIColle
     }
     
     @objc func post() {
-        // go to a view controller
+        var postViewController = PostViewController()
+        postViewController.allowsImagePosting = true
+        postViewController.fromComments = true
+        navigationController?.pushViewController(postViewController, animated: true)
     }
     
     // MARK: - Debugging

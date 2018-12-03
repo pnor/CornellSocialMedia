@@ -11,6 +11,7 @@
 		4F09519821B461F400EA1C89 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F09519721B461F400EA1C89 /* Extensions.swift */; };
 		4F0A00C621A8703700BF6EA9 /* MainFeedCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F0A00C521A8703700BF6EA9 /* MainFeedCollectionViewCell.swift */; };
 		4F0C5BA921B480270000C947 /* PostType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F0C5BA821B480270000C947 /* PostType.swift */; };
+		4F0C5BAB21B4A3830000C947 /* PostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F0C5BAA21B4A3830000C947 /* PostViewController.swift */; };
 		4F0D269721A738AA00AA8AB4 /* Gradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F0D269621A738AA00AA8AB4 /* Gradient.swift */; };
 		4F1404A121A7901B00490722 /* MainFeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1404A021A7901B00490722 /* MainFeedViewController.swift */; };
 		4FA0576A21A3B0BB000F0544 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA0576921A3B0BB000F0544 /* AppDelegate.swift */; };
@@ -32,6 +33,7 @@
 		4F09519721B461F400EA1C89 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		4F0A00C521A8703700BF6EA9 /* MainFeedCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainFeedCollectionViewCell.swift; sourceTree = "<group>"; };
 		4F0C5BA821B480270000C947 /* PostType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostType.swift; sourceTree = "<group>"; };
+		4F0C5BAA21B4A3830000C947 /* PostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewController.swift; sourceTree = "<group>"; };
 		4F0D269621A738AA00AA8AB4 /* Gradient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gradient.swift; sourceTree = "<group>"; };
 		4F1404A021A7901B00490722 /* MainFeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainFeedViewController.swift; sourceTree = "<group>"; };
 		4FA0576621A3B0BB000F0544 /* CornellSocialMedia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CornellSocialMedia.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -82,6 +84,7 @@
 				4FA0576B21A3B0BB000F0544 /* LoginViewController.swift */,
 				4F1404A021A7901B00490722 /* MainFeedViewController.swift */,
 				4F09519521B457DA00EA1C89 /* CommentViewController.swift */,
+				4F0C5BAA21B4A3830000C947 /* PostViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -283,6 +286,7 @@
 				4FA0576A21A3B0BB000F0544 /* AppDelegate.swift in Sources */,
 				87117C7521ADF2660071D2F7 /* People.swift in Sources */,
 				87117C7D21ADF29F0071D2F7 /* PeopleFilterViewController.swift in Sources */,
+				4F0C5BAB21B4A3830000C947 /* PostViewController.swift in Sources */,
 				87117C7721ADF2740071D2F7 /* ProfileViewController.swift in Sources */,
 				4F09519621B457DA00EA1C89 /* CommentViewController.swift in Sources */,
 				4F0D269721A738AA00AA8AB4 /* Gradient.swift in Sources */,

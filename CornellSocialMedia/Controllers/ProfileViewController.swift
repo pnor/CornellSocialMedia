@@ -253,7 +253,6 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
     }
     
     //MARK: - Photo Functionability
-    
     @objc func choosePhotoMode(){
         present(imageAlert, animated: true, completion: nil)
     }
