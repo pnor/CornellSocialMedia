@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ProfileViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIImagePickerControllerDelegate, UINavigationControllerDelegate  {
+class ProfileViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout{
 
     // MARK: - Parameters
     // UI Elements
@@ -24,10 +24,6 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
 
     //Collection View Elements
     let peopleViewReuseIdentifier = "peopleViewReuseIdentifier"
-
-    //Photo Elements
-    var imagePicker: UIImagePickerController!
-    var imageAlert: UIAlertController!
 
     override func viewWillAppear(_ animated: Bool) {
         let navigationBar = self.navigationController?.navigationBar
@@ -118,27 +114,6 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
         let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(respondToSwipeGesture(gesture:)))
         swipeRight.direction = .right
         view.addGestureRecognizer(swipeRight)
-
-        // Images
-        imagePicker = UIImagePickerController()
-        imagePicker.delegate = self
-        imagePicker.allowsEditing = true
-
-        imageAlert = UIAlertController(title: "Choose Option",
-                                       message: "Choose to take a photo or select one from your library",
-                                       preferredStyle: .alert)
-        imageAlert.addAction(UIAlertAction(title: "Camera",
-                                           style: .default,
-                                           handler: { (alert) in
-                                            self.imagePicker.sourceType = UIImagePickerController.SourceType.camera;
-                                            self.presentChoice();
-        }))
-        imageAlert.addAction(UIAlertAction(title: "Library",
-                                           style: .default,
-                                           handler: { (alert) in
-                                            self.imagePicker.sourceType = UIImagePickerController.SourceType.photoLibrary;
-                                            self.presentChoice();
-        }))
 
         // MARK: Background
         view.backgroundColor = .white
@@ -251,24 +226,8 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
         return UICollectionViewCell()
     }
 
-    //MARK: - Photo Functionability
-
-    @objc func choosePhotoMode(){
-        present(imageAlert, animated: true, completion: nil)
-    }
-
     @objc func logout(){
         navigationController?.popToRootViewController(animated: true)
-    }
-
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        dismiss(animated: true, completion: nil)
-    }
-
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        let imagePicked = info[UIImagePickerController.InfoKey.originalImage] as! UIImage
-        profileImage.setImage(imagePicked, for: .normal)
-        dismiss(animated: true, completion: nil)
     }
 
 }
