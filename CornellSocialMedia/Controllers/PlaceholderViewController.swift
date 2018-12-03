@@ -13,6 +13,7 @@ class PlaceholderViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        view.backgroundColor = .white
         navigationController?.pushViewController(MainFeedViewController(), animated: true)
         //It's sole purpose is to be dismissed when logged out
         //Thanks for the suggestion Mindy

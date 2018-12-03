@@ -264,7 +264,7 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
     }
 
     @objc func logout(){
-
+        navigationController?.popToRootViewController(animated: true)
     }
 
 }

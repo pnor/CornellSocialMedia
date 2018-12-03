@@ -39,6 +39,9 @@ class FirstLoginViewController: UIViewController, UIPickerViewDataSource, UIPick
     var continueButton: UIButton!
     var fillAllFieldsAlert: UIAlertController!
     
+    override func viewWillDisappear(_ animated: Bool) {
+        navigationController?.pushViewController(MainFeedViewController(), animated: true)
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.setNavigationBarHidden(true, animated: true) //remove after bc its presentedc
@@ -248,8 +251,8 @@ class FirstLoginViewController: UIViewController, UIPickerViewDataSource, UIPick
         if (classOf == "Class Year" || college == "College" || major == "Major" || name == ""){
             present(fillAllFieldsAlert, animated: true, completion: nil)
         } else {
-            //backend pushing and stuff
-            navigationController?.pushViewController(MainFeedViewController(), animated: true)
+            Backend.createProfile(display_name: name, classOf: classOf, image: profileImageButton.image(for: .normal)!, college: college, major: major)
+        dismiss(animated: true, completion: nil)
         }
     }
 
