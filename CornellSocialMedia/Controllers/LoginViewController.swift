@@ -22,7 +22,8 @@ class LoginViewController: UIViewController {
     var login : UIButton!
 
     // Log In Error Message
-    var alert : UIAlertController!
+    var badEmailAlert : UIAlertController!
+    var wrongPasswordAlert : UIAlertController!
 
     // Padding
     let titlePadding = 130
@@ -48,7 +49,7 @@ class LoginViewController: UIViewController {
         view.addSubview(loginTitle)
 
         username = IsaoTextField()
-        username.placeholder = "Username"
+        username.placeholder = "Cornell Email"
         username.textColor = .white
         username.activeColor = .red
         username.inactiveColor = .white
@@ -91,10 +92,15 @@ class LoginViewController: UIViewController {
         navigationController?.setNavigationBarHidden(true, animated: true)
 
         // MARK: Error Prompt
-//        alert = UIAlertController(title: "Error", message: "Could not log in with provided information", preferredStyle: .alert)
-//        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (alertAction) in
-//            self.alert.dismiss(animated: true, completion: nil)
-//        }))
+        badEmailAlert = UIAlertController(title: "Invalid Email", message: "Please enter a valid Cornell email", preferredStyle: .alert)
+        badEmailAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (alertAction) in
+            self.badEmailAlert.dismiss(animated: true, completion: nil)
+        }))
+
+        wrongPasswordAlert = UIAlertController(title: "Wrong Password", message: "You entered an invalid password", preferredStyle: .alert)
+        wrongPasswordAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (alertAction) in
+            self.wrongPasswordAlert.dismiss(animated: true, completion: nil)
+        }))
 
         // MARK: Animations
         UIView.animate(withDuration: 1) {
@@ -116,11 +122,23 @@ class LoginViewController: UIViewController {
         // TODO: implement proper login
         // validate username + passqord
         // if all good go to main screen:
-        
-        //present(alert, animated: true, completion: nil)
+
         login.setTitleColor(.clear, for: .normal)
-        self.navigationController?.pushViewController(MainFeedViewController(), animated: true)
+        Backend.login(username: username.text!, password: password.text!) { (error) in
+            switch(error){
+            case "User exists":
+                self.present(PlaceholderViewController(), animated: true, completion: nil)
+            case "Response status code was unacceptable: 403.":
+                self.present(self.wrongPasswordAlert, animated: true, completion: nil)
+            case "Response status code was unacceptable: 404.":
+                self.present(self.badEmailAlert, animated: true, completion: nil)
+            case "Response status code was unacceptable: 406.":
+                self.present(FirstLoginViewController(), animated: true, completion: nil)
+            default:
+                print(error)
+        }
     }
+}
 
 
     // MARK: - Functions for UI and Positioning
