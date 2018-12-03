@@ -12,19 +12,21 @@ import SwiftyJSON
 
 class Backend {
     
-    private static let gLoginEndpoint = "35.245.236.152/glogin/"
+    private static let loginEndpoint = "http://35.243.236.152/login/"
     
-//    static func getGLogin(_ didGetGLogin: @escaping ([Recipe]) -> Void) {
-//        Alamofire.request(recipePuppyURL, method: .get, parameters: parameters).validate().responseData { (response) in
-//            switch response.result {
-//            case .success(let data):
-//                let decoder = JSONDecoder()
-//                if let recipes = try? decoder.decode(RecipeSearchResponse.self, from: data){
-//                    didGetRecipes(recipes.results)
-//                }
-//            case .failure(let error):
-//                print(error.localizedDescription)
-//            }
-//        }
-//    }
+    static func login(username: String, password: String, completion: @escaping (String) -> Void){
+        let parameters: [String: Any] = [
+            "username": username,
+            "password": password
+        ]
+        
+        Alamofire.request(loginEndpoint, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: nil).validate().responseData { (response) in
+            switch response.result{
+            case .success(_):
+                completion("User exists")
+            case .failure(let error):
+                completion(error.localizedDescription)
+            }
+        }
+    }
 }

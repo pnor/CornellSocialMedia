@@ -22,7 +22,8 @@ class LoginViewController: UIViewController {
     var login : UIButton!
 
     // Log In Error Message
-    var alert : UIAlertController!
+    var badEmailAlert : UIAlertController!
+    var wrongPasswordAlert : UIAlertController!
 
     // Padding
     let titlePadding = 130
@@ -47,30 +48,30 @@ class LoginViewController: UIViewController {
         loginTitle.alpha = 0
         view.addSubview(loginTitle)
 
-//        username = IsaoTextField()
-//        username.placeholder = "Username"
-//        username.textColor = .white
-//        username.activeColor = .red
-//        username.inactiveColor = .white
-//        username.tintColor = .clear
-//        username.autocorrectionType = .no
-//        username.autocapitalizationType = .none
-//        username.font = UIFont.systemFont(ofSize: 20)
-//        username.alpha = 0.1
-//        view.addSubview(username)
-//
-//        password = IsaoTextField()
-//        password.placeholder = "Password"
-//        password.textColor = .white
-//        password.activeColor = .red
-//        password.inactiveColor = .white
-//        password.tintColor = .clear
-//        password.autocorrectionType = .no
-//        password.autocapitalizationType = .none
-//        password.font = UIFont.systemFont(ofSize: 20)
-//        password.isSecureTextEntry = true
-//        password.alpha = 0.2
-//        view.addSubview(password)
+        username = IsaoTextField()
+        username.placeholder = "Cornell Email"
+        username.textColor = .white
+        username.activeColor = .red
+        username.inactiveColor = .white
+        username.tintColor = .clear
+        username.autocorrectionType = .no
+        username.autocapitalizationType = .none
+        username.font = UIFont.systemFont(ofSize: 20)
+        username.alpha = 0.1
+        view.addSubview(username)
+
+        password = IsaoTextField()
+        password.placeholder = "Password"
+        password.textColor = .white
+        password.activeColor = .red
+        password.inactiveColor = .white
+        password.tintColor = .clear
+        password.autocorrectionType = .no
+        password.autocapitalizationType = .none
+        password.font = UIFont.systemFont(ofSize: 20)
+        password.isSecureTextEntry = true
+        password.alpha = 0.2
+        view.addSubview(password)
 
         login = UIButton()
         login.setTitle("Log in", for: .normal)
@@ -91,16 +92,21 @@ class LoginViewController: UIViewController {
         navigationController?.setNavigationBarHidden(true, animated: true)
 
         // MARK: Error Prompt
-//        alert = UIAlertController(title: "Error", message: "Could not log in with provided information", preferredStyle: .alert)
-//        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (alertAction) in
-//            self.alert.dismiss(animated: true, completion: nil)
-//        }))
+        badEmailAlert = UIAlertController(title: "Invalid Email", message: "Please enter a valid Cornell email", preferredStyle: .alert)
+        badEmailAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (alertAction) in
+            self.badEmailAlert.dismiss(animated: true, completion: nil)
+        }))
+        
+        wrongPasswordAlert = UIAlertController(title: "Wrong Password", message: "You entered an invalid password", preferredStyle: .alert)
+        wrongPasswordAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (alertAction) in
+            self.wrongPasswordAlert.dismiss(animated: true, completion: nil)
+        }))
 
         // MARK: Animations
         UIView.animate(withDuration: 1) {
             self.loginTitle.alpha = 1
-//            self.username.alpha = 1
-//            self.password.alpha = 1
+            self.username.alpha = 1
+            self.password.alpha = 1
             self.login.alpha = 1
         }
 
@@ -117,10 +123,22 @@ class LoginViewController: UIViewController {
         // validate username + passqord
         // if all good go to main screen:
         
-        //present(alert, animated: true, completion: nil)
         login.setTitleColor(.clear, for: .normal)
-        self.navigationController?.pushViewController(MainFeedViewController(), animated: true)
+        Backend.login(username: username.text!, password: password.text!) { (error) in
+            switch(error){
+            case "User exists":
+                self.present(PlaceholderViewController(), animated: true, completion: nil)
+            case "Response status code was unacceptable: 403.":
+                self.present(self.wrongPasswordAlert, animated: true, completion: nil)
+            case "Response status code was unacceptable: 404.":
+                self.present(self.badEmailAlert, animated: true, completion: nil)
+            case "Response status code was unacceptable: 406.":
+                self.present(FirstLoginViewController(), animated: true, completion: nil)
+            default:
+                print(error)
+        }
     }
+}
 
 
     // MARK: - Functions for UI and Positioning
@@ -147,20 +165,20 @@ class LoginViewController: UIViewController {
             make.centerY.equalTo(view).offset(-titlePadding)
         }
 
-//        username.snp.makeConstraints { (make) -> Void in
-//            make.centerY.equalTo(view).offset(padding)
-//            make.centerX.equalTo(view)
-//            make.width.equalTo(textFieldWidth)
-//        }
-//
-//        password.snp.makeConstraints { (make) -> Void in
-//            make.top.equalTo(username.snp_bottomMargin).offset(padding)
-//            make.centerX.equalTo(view)
-//            make.width.equalTo(textFieldWidth)
-//        }
+        username.snp.makeConstraints { (make) -> Void in
+            make.centerY.equalTo(view).offset(padding)
+            make.centerX.equalTo(view)
+            make.width.equalTo(textFieldWidth)
+        }
+
+        password.snp.makeConstraints { (make) -> Void in
+            make.top.equalTo(username.snp_bottomMargin).offset(padding)
+            make.centerX.equalTo(view)
+            make.width.equalTo(textFieldWidth)
+        }
 
         login.snp.makeConstraints { (make)  -> Void in
-            make.top.equalTo(loginTitle.snp_bottomMargin).offset(padding+50)
+            make.top.equalTo(password.snp_bottomMargin).offset(padding+50)
             make.centerX.equalTo(view)
             make.width.equalTo(buttonWidth)
             make.height.equalTo(buttonHeight)

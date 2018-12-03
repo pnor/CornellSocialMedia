@@ -51,12 +51,12 @@ class FirstLoginViewController: UIViewController, UIPickerViewDataSource, UIPick
         instructionsTextView = UITextView()
         instructionsTextView.isScrollEnabled = false
         instructionsTextView.isEditable = false
-        instructionsTextView.text = "Fill out all fields before continuing"
+        instructionsTextView.text = "Fill out all fields to create your account"
         instructionsTextView.font = UIFont.systemFont(ofSize: 20)
         view.addSubview(instructionsTextView)
         
         profileImageButton = UIButton()
-        profileImageButton.setImage(UIImage(named: "cornell2"), for: .normal)
+        profileImageButton.setImage(UIImage(named: "cornellC"), for: .normal)
         profileImageButton.imageView?.contentMode = .scaleAspectFill
         profileImageButton.layer.borderWidth = 1
         profileImageButton.layer.borderColor = UIColor.white.cgColor

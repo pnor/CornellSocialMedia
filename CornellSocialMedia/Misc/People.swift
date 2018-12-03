@@ -27,7 +27,7 @@ class People{
     var classOf: Int!
     var college: String!
     var major: String!
-    
+
     init(name: String, photo: UIImage, classOf: Int, college: String, major: String){
         self.name = name
         self.photo = photo
