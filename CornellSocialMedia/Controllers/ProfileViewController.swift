@@ -21,6 +21,10 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
     var profileNavigatorView: UICollectionView!
 
     var backButton: UIBarButtonItem!
+    
+    //Profile Functionality Buttons
+    var editOrFollowButton: UIButton!
+    var logoutBarButton: UIBarButtonItem!
 
     //Collection View Elements
     let peopleViewReuseIdentifier = "peopleViewReuseIdentifier"
@@ -36,17 +40,6 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
         let navigationBar = self.navigationController?.navigationBar
         navigationBar!.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
         navigationBar!.shadowImage = UIImage()
-        
-        Backend.getProfile { (user) in
-            self.name = user.display_name
-            let imageURL = URL(string: user.image)!
-            let imageData = try! Data(contentsOf: imageURL)
-            self.image = UIImage(data: imageData)
-            self.classOf = String(user.year)
-            self.college = user.college
-            self.major = user.major
-            self.setValues()
-        }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -57,6 +50,17 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        Backend.getProfile { (user) in
+            self.name = user.display_name
+            let imageURL = URL(string: user.image)!
+            let imageData = try! Data(contentsOf: imageURL)
+            self.image = UIImage(data: imageData)
+            self.classOf = String(user.year)
+            self.college = user.college
+            self.major = user.major
+            self.setValues()
+        }
+        
         //MARK: Title
         title = "Profile"
         let textAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
@@ -64,13 +68,11 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
 
         // MARK: - UI Elements
         profileNameLabel = UILabel()
-        //profileNameLabel.text = name
         profileNameLabel.font = UIFont.systemFont(ofSize: 20, weight: .bold)
         profileNameLabel.textColor = .white
         view.addSubview(profileNameLabel)
 
         profileImage = UIImageView()
-        //profileImage.image = image
         profileImage.contentMode = .scaleAspectFill
         profileImage.layer.borderWidth = 1
         profileImage.layer.borderColor = UIColor.white.cgColor
@@ -79,19 +81,16 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
         view.addSubview(profileImage)
 
         profileClassLabel = UILabel()
-        //profileClassLabel.text = "Class of " + classOf
         profileClassLabel.font = UIFont.systemFont(ofSize: 18)
         profileClassLabel.textColor = .white
         view.addSubview(profileClassLabel)
 
         profileCollegeLabel = UILabel()
-        //profileCollegeLabel.text = college
         profileCollegeLabel.font = UIFont.systemFont(ofSize: 18)
         profileCollegeLabel.textColor = .white
         view.addSubview(profileCollegeLabel)
 
         profileMajorLabel = UILabel()
-        //profileMajorLabel.text = major
         profileMajorLabel.font = UIFont.systemFont(ofSize: 18)
         profileMajorLabel.textColor = .white
         view.addSubview(profileMajorLabel)
@@ -124,6 +123,23 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
         backButton.action = #selector(goBack)
         navigationItem.leftBarButtonItem = backButton
         navigationItem.hidesBackButton = true
+        
+        editOrFollowButton = UIButton()
+        editOrFollowButton.setTitle("Edit Profile", for: .normal)
+        editOrFollowButton.setTitleColor(.white, for: .normal)
+        editOrFollowButton.addTarget(self, action: #selector(editProfile), for: .touchUpInside)
+        editOrFollowButton.titleLabel?.textAlignment = .center
+        editOrFollowButton.backgroundColor = .clear
+        editOrFollowButton.layer.cornerRadius = 5
+        editOrFollowButton.layer.borderWidth = 1
+        editOrFollowButton.layer.borderColor = UIColor.white.cgColor
+        view.addSubview(editOrFollowButton)
+        
+        logoutBarButton = UIBarButtonItem()
+        navigationItem.rightBarButtonItem = logoutBarButton
+        logoutBarButton.title = "Logout"
+        logoutBarButton.target = self
+        logoutBarButton.action = #selector(logout)
 
         // Swiping
         let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(respondToSwipeGesture(gesture:)))
@@ -144,6 +160,7 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
         profileNameLabel.hero.modifiers = [.translate(x:100)]
         profileClassLabel.hero.modifiers = [.translate(x:100)]
         profileMajorLabel.hero.modifiers = [.translate(x:100)]
+        editOrFollowButton.hero.modifiers = [.translate(x:100)]
         profileCollegeLabel.hero.modifiers = [.translate(x:100)]
         profileNavigator.hero.modifiers = [.translate(x:100)]
 
@@ -152,15 +169,13 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
 
     func setUpConstraints(){
 
-        profileNameLabel.snp.makeConstraints { (make) in            make.top.equalTo(view.safeAreaLayoutGuide).offset(25)
-            make.left.equalTo(view).offset(25)
+        profileNameLabel.snp.makeConstraints { (make) in            make.top.equalTo(view.safeAreaLayoutGuide).offset(15)
             make.centerX.equalTo(view)
-            make.width.equalTo(375)
             make.height.equalTo(24)
         }
 
         profileImage.snp.makeConstraints { (make) in
-            make.top.equalTo(profileNameLabel).offset(25)
+            make.top.equalTo(profileNameLabel).offset(30)
             make.centerX.equalTo(profileNameLabel)
             make.height.width.equalTo(100)
         }
@@ -183,9 +198,16 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
             make.height.equalTo(20)
         }
 
+        editOrFollowButton.snp.makeConstraints { (make) in
+            make.top.equalTo(profileMajorLabel).offset(25)
+            make.centerX.equalTo(view)
+            make.width.equalTo(125)
+            make.height.equalTo(25)
+        }
+        
         profileNavigator.snp.makeConstraints { (make) in
             make.left.right.equalTo(view.safeAreaLayoutGuide)
-            make.top.equalTo(profileMajorLabel).offset(30)
+            make.top.equalTo(editOrFollowButton).offset(30)
             make.height.equalTo(25)
         }
 
@@ -250,6 +272,10 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
         return UICollectionViewCell()
     }
 
+    @objc func editProfile(){
+        present(ProfileEditViewController(), animated: true)
+    }
+    
     @objc func logout(){
         navigationController?.popToRootViewController(animated: true)
     }

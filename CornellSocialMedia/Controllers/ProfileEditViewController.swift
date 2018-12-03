@@ -31,14 +31,27 @@ class ProfileEditViewController: UIViewController, UIPickerViewDataSource, UIPic
     
     //Profile Values
     var name: String = ""
-    var classOf: String = "2022"
-    var college: String = "College of Engineering"
-    var major: String = "Computer Science"
-    //placeholders, should be retrieved using a get request
+    var image: UIImage = UIImage()
+    var classOf: String = ""
+    var college: String = ""
+    var major: String = ""
     
     //Continue Logistics
     var finishChangesButton: UIButton!
     var fillAllFieldsAlert: UIAlertController!
+    
+    override func viewWillAppear(_ animated: Bool) {
+        Backend.getProfile { (user) in
+            self.name = user.display_name
+            let imageURL = URL(string: user.image)!
+            let imageData = try! Data(contentsOf: imageURL)
+            self.image = UIImage(data: imageData)!
+            self.classOf = String(user.year)
+            self.college = user.college
+            self.major = user.major
+            self.setValues()
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,7 +59,7 @@ class ProfileEditViewController: UIViewController, UIPickerViewDataSource, UIPic
         
         nameTextField = UITextField()
         nameTextField.placeholder = "Enter your name"
-        nameTextField.text = "Gonzalo Gonzalez-Pumariega" //set by get
+        //nameTextField.text = "Gonzalo Gonzalez-Pumariega" //set by get
         nameTextField.font = UIFont.systemFont(ofSize: 20)
         view.addSubview(nameTextField)
         
@@ -58,7 +71,7 @@ class ProfileEditViewController: UIViewController, UIPickerViewDataSource, UIPic
         view.addSubview(instructionsTextView)
         
         profileImageButton = UIButton()
-        profileImageButton.setImage(UIImage(named: "cornell2"), for: .normal)
+        //profileImageButton.setImage(UIImage(named: "cornell2"), for: .normal)
         profileImageButton.imageView?.contentMode = .scaleAspectFill
         profileImageButton.layer.borderWidth = 1
         profileImageButton.layer.borderColor = UIColor.white.cgColor
@@ -70,19 +83,16 @@ class ProfileEditViewController: UIViewController, UIPickerViewDataSource, UIPic
         classPicker = UIPickerView()
         classPicker.dataSource = self
         classPicker.delegate = self
-        classPicker.selectRow(classPickerDataSource.firstIndex(of: "2022")!, inComponent: 0, animated: true) //string gotten with get
         view.addSubview(classPicker)
         
         collegePicker = UIPickerView()
         collegePicker.dataSource = self
         collegePicker.delegate = self
-        collegePicker.selectRow(collegePickerDataSource.firstIndex(of: "College of Engineering")!, inComponent: 0, animated: true) //string gotten with get
         view.addSubview(collegePicker)
         
         majorPicker = UIPickerView()
         majorPicker.dataSource = self
         majorPicker.delegate = self
-        majorPicker.selectRow(majorPickerDataSource.firstIndex(of: "Computer Science")!, inComponent: 0, animated: true) //string gotten with get
         view.addSubview(majorPicker)
         
         imagePicker = UIImagePickerController()
@@ -168,6 +178,15 @@ class ProfileEditViewController: UIViewController, UIPickerViewDataSource, UIPic
             make.centerX.equalTo(view)
         }
         
+    }
+    
+    //Backend Function
+    func setValues(){
+        nameTextField.text = name
+        profileImageButton.setImage(image, for: .normal)
+        classPicker.selectRow(classPickerDataSource.firstIndex(of: classOf)!, inComponent: 0, animated: true)
+        collegePicker.selectRow(collegePickerDataSource.firstIndex(of: college)!, inComponent: 0, animated: true)
+        majorPicker.selectRow(majorPickerDataSource.firstIndex(of: major)!, inComponent: 0, animated: true)
     }
     
     //MARK: - Picker View Protocol Stubs
