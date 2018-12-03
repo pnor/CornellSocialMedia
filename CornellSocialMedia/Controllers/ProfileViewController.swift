@@ -13,7 +13,7 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
     // MARK: - Parameters
     // UI Elements
     var profileNameLabel: UILabel!
-    var profileImage: UIButton!
+    var profileImage: UIImageView!
     var profileClassLabel: UILabel!
     var profileCollegeLabel: UILabel!
     var profileMajorLabel: UILabel!
@@ -53,14 +53,13 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
         profileNameLabel.textColor = .white
         view.addSubview(profileNameLabel)
 
-        profileImage = UIButton()
-        profileImage.setImage(UIImage(named: "cornell2"), for: .normal)
-        profileImage.imageView?.contentMode = .scaleAspectFill
+        profileImage = UIImageView()
+        profileImage.image = UIImage(named: "cornell2")
+        profileImage.contentMode = .scaleAspectFill
         profileImage.layer.borderWidth = 1
         profileImage.layer.borderColor = UIColor.white.cgColor
         profileImage.layer.cornerRadius = 50
         profileImage.clipsToBounds = true
-        profileImage.addTarget(self, action: #selector(choosePhotoMode), for: .touchUpInside)
         view.addSubview(profileImage)
 
         profileClassLabel = UILabel()
